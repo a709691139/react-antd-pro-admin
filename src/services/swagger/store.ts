@@ -1,6 +1,6 @@
 // @ts-ignore
 /* eslint-disable */
-import { request } from '@umijs/max';
+import { request } from '@/requestConfig';
 
 /** Returns pet inventories by status Returns a map of status codes to quantities GET /store/inventory */
 export async function getInventory(options?: { [key: string]: any }) {

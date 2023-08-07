@@ -1,6 +1,7 @@
-﻿import type { RequestOptions } from '@@/plugin-request/request';
+import type { RequestOptions } from '@@/plugin-request/request';
 import type { RequestConfig } from '@umijs/max';
 import { message, notification } from 'antd';
+import { request as myRequest, Request } from '@umijs/max';
 
 // 错误处理方案： 错误类型
 enum ErrorShowType {
@@ -20,6 +21,17 @@ interface ResponseStructure {
   success: boolean;
 }
 
+type ApiResponse<T> = {
+  data: T;
+  success: boolean;
+  msg: string;
+  status: number;
+};
+
+export const request = <T>(url: string, opts: RequestOptions) => {
+  return myRequest<ApiResponse<T>>(url, opts);
+};
+
 /**
  * @name 错误处理
  * pro 自带的错误处理， 可以在这里做自己的改动
@@ -29,6 +41,7 @@ export const errorConfig: RequestConfig = {
   transformResponse: (resData) => {
     if (resData?.[0] === '{') {
       const data = JSON.parse(resData);
+      if (data.success) return data;
       data.success = data.status === 0;
       return data;
     }

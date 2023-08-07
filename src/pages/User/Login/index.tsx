@@ -84,7 +84,7 @@ const LoginMessage: React.FC<{
 };
 
 const Login: React.FC = () => {
-  const [userLoginState, setUserLoginState] = useState({status:0, msg:''});
+  const [userLoginState, setUserLoginState] = useState({ status: 0, msg: '' });
   const [type, setType] = useState<string>('account');
   const { initialState, setInitialState } = useModel('@@initialState');
 
@@ -119,7 +119,7 @@ const Login: React.FC = () => {
       // 登录
       const { success, data } = await login({ ...values, type });
       if (success) {
-        localStorage.setItem("token",data.token);
+        localStorage.setItem('token', data.token);
         const defaultLoginSuccessMessage = intl.formatMessage({
           id: 'pages.login.success',
           defaultMessage: '登录成功！',

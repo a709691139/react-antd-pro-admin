@@ -1,12 +1,10 @@
 // @ts-ignore
 /* eslint-disable */
-import { request } from '@umijs/max';
+import { request } from '@/requestConfig';
 
 /** 获取当前的用户 GET /api/sys_user/getCurrentUserInfo*/
 export async function currentUser(options?: { [key: string]: any }) {
-  return request<{
-    data: API.CurrentUser;
-  }>('/api/sys_user/getCurrentUserInfo', {
+  return request<API.CurrentUser>('/api/sys_user/getCurrentUserInfo', {
     method: 'GET',
     ...(options || {}),
   });
@@ -14,9 +12,7 @@ export async function currentUser(options?: { [key: string]: any }) {
 
 /** 获取当前的用户 GET /api/permission/getCurrentUserPermissions */
 export async function getCurrentUserPermissions(options?: { [key: string]: any }) {
-  return request<{
-    data: API.Permission[];
-  }>('/api/permission/getCurrentUserPermissions', {
+  return request<API.Permission[]>('/api/permission/getCurrentUserPermissions', {
     method: 'POST',
     ...(options || {}),
   });
@@ -30,9 +26,11 @@ export async function outLogin(options?: { [key: string]: any }) {
   });
 }
 
-/** 登录接口 POST /api/login/account */
+/** 登录接口s */
 export async function login(body: API.LoginParams, options?: { [key: string]: any }) {
-  return request('/api/sys_user/loginByPassword', {
+  return request<{
+    token: string;
+  }>('/api/sys_user/loginByPassword', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -44,9 +42,7 @@ export async function login(body: API.LoginParams, options?: { [key: string]: an
 
 /** 获取系统默认菜单列表 GET /api/permission/page */
 export async function getSystemPermissions(options?: { [key: string]: any }) {
-  return request<{
-    data: API.Permission[];
-  }>('/api/permission/page', {
+  return request<API.Permission[]>('/api/permission/page', {
     method: 'GET',
     ...(options || {}),
   });

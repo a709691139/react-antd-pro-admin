@@ -9,7 +9,7 @@ import { LinkProps } from 'react-router-dom';
 import defaultSettings from '../config/defaultSettings';
 import { AvatarDropdown, AvatarName } from './components/RightContent/AvatarDropdown';
 import { getMenuData, layoutActionRef } from './fetchRoutes';
-import { errorConfig } from './requestErrorConfig';
+import { errorConfig } from './requestConfig';
 import {
   currentUser as queryCurrentUser,
   getCurrentUserPermissions,

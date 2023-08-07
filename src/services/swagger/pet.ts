@@ -1,6 +1,6 @@
 // @ts-ignore
 /* eslint-disable */
-import { request } from '@umijs/max';
+import { request } from '@/requestConfig';
 
 /** Update an existing pet PUT /pet */
 export async function updatePet(body: API.Pet, options?: { [key: string]: any }) {

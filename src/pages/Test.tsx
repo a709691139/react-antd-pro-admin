@@ -1,4 +1,4 @@
-const Test:React.FC= ()=>{
-    return 'Test'
-}
-export default Test
+const Test: React.FC = () => {
+  return 'Test';
+};
+export default Test;
