@@ -1,12 +1,17 @@
-import Page404 from '@/pages/404';
-import Test from '@/pages/Test';
 import type { MenuDataItem } from '@umijs/route-utils';
 import { createRef } from 'react';
 import { getSystemPermissions } from './services/ant-design-pro/api';
 
+import Page404 from '@/pages/404';
+import Test from '@/pages/Test';
+import AmisPage from '@/pages/Amis/AmisPage';
+import AmisEditPage from '@/pages/Amis/AmisEditPage';
+
 const comps: any = {
   Test,
   Page404,
+  AmisEditPage,
+  AmisPage,
 };
 /** 动态的接口路由 */
 const extraRoutes: API.Permission[] = [];
@@ -14,6 +19,9 @@ const extraRoutes: API.Permission[] = [];
 export const layoutActionRef = createRef<{ reload: () => void }>();
 
 function transExtraRoutes(tree: API.Permission[]) {
+  if (!tree?.length) {
+    return [];
+  }
   if (tree[0].id === '1') {
     return transExtraRoutes(tree[0].children || []);
   }

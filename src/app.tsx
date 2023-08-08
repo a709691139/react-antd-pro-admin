@@ -16,6 +16,11 @@ import {
 } from './services/ant-design-pro/api';
 export { patchClientRoutes, render } from './fetchRoutes';
 
+import 'amis/lib/themes/cxd.css';
+import 'amis/lib/helper.css';
+import 'amis/sdk/iconfont.css';
+import 'amis/lib/themes/antd.css';
+
 const isDev = process.env.NODE_ENV === 'development';
 const loginPath = '/user/login';
 
@@ -139,13 +144,13 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
     },
     actionRef: layoutActionRef,
     menu: {
-      request: async (params, defaultMenuData) => {
+      request: async (_params, _defaultMenuData) => {
         const menu = getMenuData();
         console.log('getMenuData', menu);
         return menu;
       },
     },
-    menuItemRender: (item, defaultDom, menuProps) => {
+    menuItemRender: (item, defaultDom, _menuProps) => {
       const props: LinkProps = {
         to: item.path as string,
       };

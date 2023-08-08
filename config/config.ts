@@ -4,6 +4,7 @@ import { join } from 'path';
 import defaultSettings from './defaultSettings';
 import proxy from './proxy';
 import routes from './routes';
+import MonacoWebpackPlugin from 'monaco-editor-webpack-plugin';
 
 const { REACT_APP_ENV = 'dev' } = process.env;
 
@@ -154,5 +155,12 @@ export default defineConfig({
   requestRecord: {},
   define: {
     TENANT_ID: process.env.TENANT_ID,
+  },
+  chainWebpack: function (config, { webpack }) {
+    config.plugin('monaco-editor').use(MonacoWebpackPlugin, [
+      {
+        languages: ['yaml'],
+      },
+    ]);
   },
 });

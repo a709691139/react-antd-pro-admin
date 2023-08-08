@@ -30,17 +30,6 @@ const getAccess = () => {
 export default {
   // 支持值为 Object 和 Array
   'GET /api/sys_user/getCurrentUserInfo': (req: Request, res: Response) => {
-    if (!getAccess()) {
-      res.status(401).send({
-        data: {
-          isLogin: false,
-        },
-        errorCode: '401',
-        errorMessage: '请先登录！',
-        success: true,
-      });
-      return;
-    }
     res.send({
       success: true,
       data: {
@@ -50,7 +39,13 @@ export default {
       },
     });
   },
-  'GET /api/permission/getCurrentUserPermissions': {
+  'POST /api/sys_user/loginByPassword': {
+    success: true,
+    data: {
+      token: 'admin',
+    },
+  },
+  'GET /api/permission/page': {
     success: true,
     data: [
       {
@@ -61,10 +56,28 @@ export default {
         children: [
           {
             id: '2',
+            menuType: '1',
             name: '用户管理',
             url: 'system/user',
           },
         ],
+      },
+    ],
+  },
+  'POST /api/permission/getCurrentUserPermissions': {
+    success: true,
+    data: [
+      {
+        id: '1',
+        name: '系统管理',
+        menuType: '0',
+        url: '/system',
+      },
+      {
+        id: '2',
+        menuType: '1',
+        name: '用户管理',
+        url: 'system/user',
       },
     ],
   },
