@@ -32,6 +32,13 @@ export const request = <T>(url: string, opts: RequestOptions) => {
   return myRequest<ApiResponse<T>>(url, opts);
 };
 
+export const getCommonHeaders=()=>{
+  return {
+    token: localStorage.token,
+    tenantId: TENANT_ID,
+  }
+}
+
 /**
  * @name 错误处理
  * pro 自带的错误处理， 可以在这里做自己的改动
@@ -118,8 +125,7 @@ export const errorConfig: RequestConfig = {
       const url = config?.url;
       const headers = {
         ...(config.headers || {}),
-        token: localStorage.token,
-        tenantId: TENANT_ID,
+        ...getCommonHeaders(),
       };
       return { ...config, url, headers };
     },

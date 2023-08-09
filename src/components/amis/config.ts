@@ -1,5 +1,6 @@
 import axios from 'axios';
 import copy from 'copy-to-clipboard';
+import {getCommonHeaders} from "@/requestConfig"
 
 const env = {
   // 下面三个接口必须实现
@@ -19,8 +20,10 @@ const env = {
       config.cancelToken = new (axios as any).CancelToken(config.cancelExecutor);
     }
 
-    config.headers = headers || {};
-    config.headers.token = localStorage.token;
+    config.headers = {
+      ...(headers||{}),
+      ...getCommonHeaders(),
+    }
 
     if (method !== 'post' && method !== 'put' && method !== 'patch') {
       if (data) {

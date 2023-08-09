@@ -55,3 +55,10 @@ npm test
 ## More
 
 You can view full document on our [official website](https://pro.ant.design). And welcome any feedback in our [github](https://github.com/ant-design/ant-design-pro).
+
+
+## 路由
+### amis组件
+- 渲染component: AmisPage
+- 编辑器component: AmisEditorPage
+- 本地json, url规则: /amis/:pageId, 根据pageId去读取对应json
