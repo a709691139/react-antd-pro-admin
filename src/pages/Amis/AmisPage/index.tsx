@@ -48,9 +48,15 @@ const AmisPage: FC<any> = () => {
   return (
     <Layout className="page AmisPage">
       <Breadcrumb className="pageBreadCrumb">
-        <Button style={{ marginRight: '20px' }} onClick={() => window.history.back()} size="small">
-          返回
-        </Button>
+        <Breadcrumb.Item>
+          <Button
+            style={{ marginRight: '20px' }}
+            onClick={() => window.history.back()}
+            size="small"
+          >
+            返回
+          </Button>
+        </Breadcrumb.Item>
         <Breadcrumb.Item>
           <Link to="/">首页</Link>
         </Breadcrumb.Item>

@@ -7,6 +7,7 @@ import '@/components/amis/components';
 import '@/components/amis/components/plugin';
 import copy from 'copy-to-clipboard';
 import { Link } from '@umijs/max';
+import './style.css';
 
 let host = `${window.location.protocol}//${window.location.host}`;
 const schemaUrl = `${host}/schema.json`;
@@ -30,9 +31,15 @@ const AmisEditPage: FC<any> = () => {
   return (
     <Layout className="page AmisEditPage">
       <Breadcrumb className="pageBreadCrumb">
-        <Button style={{ marginRight: '20px' }} onClick={() => window.history.back()} size="small">
-          返回
-        </Button>
+        <Breadcrumb.Item>
+          <Button
+            style={{ marginRight: '20px' }}
+            onClick={() => window.history.back()}
+            size="small"
+          >
+            返回
+          </Button>
+        </Breadcrumb.Item>
         <Breadcrumb.Item>
           <Link to="/">首页</Link>
         </Breadcrumb.Item>

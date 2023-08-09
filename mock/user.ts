@@ -49,18 +49,32 @@ export default {
     success: true,
     data: [
       {
-        id: '1',
+        id: '2',
         name: '系统管理',
         menuType: '0',
         url: '/system',
         children: [
           {
-            id: '2',
+            id: '2-1',
             menuType: '1',
             name: '用户管理',
             url: 'system/user',
           },
         ],
+      },
+      {
+        id: '3',
+        menuType: '0',
+        name: 'amis',
+        url: '/amis',
+        component: 'AmisPage',
+      },
+      {
+        id: '4',
+        menuType: '0',
+        name: 'amis编辑器',
+        url: '/amis-editor',
+        component: 'AmisEditPage',
       },
     ],
   },
@@ -68,16 +82,28 @@ export default {
     success: true,
     data: [
       {
-        id: '1',
+        id: '2',
         name: '系统管理',
         menuType: '0',
         url: '/system',
       },
       {
-        id: '2',
+        id: '2-1',
         menuType: '1',
         name: '用户管理',
-        url: 'system/user',
+        url: '/system/user',
+      },
+      {
+        id: '3',
+        menuType: '0',
+        name: 'amis',
+        url: '/amis',
+      },
+      {
+        id: '4',
+        menuType: '0',
+        name: 'amis编辑器',
+        url: '/amis-editor',
       },
     ],
   },
