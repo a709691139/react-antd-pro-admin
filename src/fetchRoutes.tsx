@@ -1,11 +1,17 @@
+import React, { Suspense } from 'react';
 import type { MenuDataItem } from '@umijs/route-utils';
 import { createRef } from 'react';
 import { getSystemPermissions } from './services/ant-design-pro/api';
 
 import Page404 from '@/pages/404';
 import Test from '@/pages/Test';
-import AmisPage from '@/pages/Amis/AmisPage';
-import AmisEditPage from '@/pages/Amis/AmisEditPage';
+
+const AmisPage = React.lazy(() => import('@/pages/Amis/AmisPage'));
+const AmisEditPage = React.lazy(() => import('@/pages/Amis/AmisEditPage'));
+
+const Wrapper = ({ children }: any) => (
+  <Suspense fallback={<div>loading...</div>}>{children}</Suspense>
+);
 
 const comps: any = {
   Test,
@@ -29,15 +35,20 @@ function transExtraRoutes(tree: API.Permission[]) {
     .filter((v) => v.menuType === '0' || v.menuType === '1')
     .sort((a, b) => a.sortNo - b.sortNo)
     .map((v) => {
-      const route: any = {
+      const route = {
         name: v.name,
         path: v.url,
         access: v.perms || v.url,
+        hideInMenu: false,
       };
       if (v.component) {
         const Comp: any = comps[v.component];
         if (Comp) {
-          route.element = <Comp />;
+          route.element = (
+            <Wrapper>
+              <Comp />
+            </Wrapper>
+          );
         } else {
           route.element = <Page404 />;
         }
@@ -49,7 +60,7 @@ function transExtraRoutes(tree: API.Permission[]) {
     });
 }
 
-export function patchClientRoutes({ routes }) {
+export function patchClientRoutes({ routes }: any) {
   console.log('patchClientRoutes', routes);
   // 根据 extraRoutes 对 routes 做一些修改
   // TODO
@@ -60,7 +71,11 @@ export function patchClientRoutes({ routes }) {
   //     element: <Page />,
   //   }],
   // });
-  routes.push(...transExtraRoutes(extraRoutes));
+  routes.forEach((element: any) => {
+    if (element.id === 'ant-design-pro-layout') {
+      element.children.push(...transExtraRoutes(extraRoutes));
+    }
+  });
 }
 
 export function render(oldRender: any) {
@@ -92,10 +107,11 @@ export function transMenu(tree: API.Permission[]): MenuDataItem[] {
         name: v.name,
         path: v.url,
         redirect: v.redirect,
-        menuRender: v.isHidden === '0',
         icon: v.icon,
-        locale: false,
       };
+      if (v.isHidden === '0' || !v.isHidden) {
+        return route;
+      }
       route.children = undefined;
       if (!v.redirect && v.children && v.children.length > 0) {
         route.routes = transMenu(v.children);

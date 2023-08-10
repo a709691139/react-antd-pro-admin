@@ -83,7 +83,7 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
     waterMarkProps: {
       content: initialState?.currentUser?.username,
     },
-    footerRender: () => <Footer />,
+    // footerRender: () => <Footer />,
     onPageChange: () => {
       const { location } = history;
       // 如果没有登录，重定向到 login
@@ -144,6 +144,7 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
     },
     actionRef: layoutActionRef,
     menu: {
+      locale: false,
       request: async (_params, _defaultMenuData) => {
         const menu = getMenuData();
         console.log('getMenuData', menu);
