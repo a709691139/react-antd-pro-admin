@@ -161,16 +161,10 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
           </a>
         );
       }
-      console.log('menuItemRender', item.name, item);
       return <Link {...props}>{defaultDom}</Link>;
     },
     menuDataRender: (menuData) => {
-      return menuData.map((v) => {
-        return {
-          ...v,
-          locale: null,
-        };
-      });
+      return menuData;
     },
     ...initialState?.settings,
   };

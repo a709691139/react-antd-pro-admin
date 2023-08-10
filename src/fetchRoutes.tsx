@@ -94,6 +94,7 @@ export function transMenu(tree: API.Permission[]): MenuDataItem[] {
         redirect: v.redirect,
         menuRender: v.isHidden === '0',
         icon: v.icon,
+        locale: false,
       };
       route.children = undefined;
       if (!v.redirect && v.children && v.children.length > 0) {
