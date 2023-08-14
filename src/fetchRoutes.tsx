@@ -29,10 +29,11 @@ function transExtraRoutes(tree: API.Permission[]) {
     .filter((v) => v.menuType === '0' || v.menuType === '1')
     .sort((a, b) => a.sortNo - b.sortNo)
     .map((v) => {
-      const route: any = {
+      const route = {
         name: v.name,
         path: v.url,
         access: v.perms || v.url,
+        hideInMenu: false,
       };
       if (v.component) {
         const Comp: any = comps[v.component];
@@ -96,8 +97,10 @@ export function transMenu(tree: API.Permission[]): MenuDataItem[] {
         path: v.url,
         redirect: v.redirect,
         icon: v.icon,
-        locale: false,
       };
+      if (v.isHidden === '0' || !v.isHidden) {
+        return route;
+      }
       route.children = undefined;
       if (!v.redirect && v.children && v.children.length > 0) {
         route.routes = transMenu(v.children);
