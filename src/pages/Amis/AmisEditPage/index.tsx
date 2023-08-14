@@ -1,12 +1,11 @@
-import { useMount, useReactive } from 'ahooks';
-import React, { FC } from 'react';
-import { Layout, Breadcrumb, Button, Form, Switch, message } from 'antd';
-import { Editor } from 'amis-editor';
-import config from '@/components/amis/config';
 import '@/components/amis/components';
 import '@/components/amis/components/plugin';
+import config from '@/components/amis/config';
+import { useMount, useReactive } from 'ahooks';
+import { Editor } from 'amis-editor';
+import { Breadcrumb, Button, Form, Layout, message, Switch } from 'antd';
 import copy from 'copy-to-clipboard';
-import { Link } from '@umijs/max';
+import { FC } from 'react';
 import './style.css';
 
 let host = `${window.location.protocol}//${window.location.host}`;
@@ -30,21 +29,7 @@ const AmisEditPage: FC<any> = () => {
 
   return (
     <Layout className="page AmisEditPage">
-      <Breadcrumb className="pageBreadCrumb">
-        <Breadcrumb.Item>
-          <Button
-            style={{ marginRight: '20px' }}
-            onClick={() => window.history.back()}
-            size="small"
-          >
-            返回
-          </Button>
-        </Breadcrumb.Item>
-        <Breadcrumb.Item>
-          <Link to="/">首页</Link>
-        </Breadcrumb.Item>
-        <Breadcrumb.Item>AmisEditPage</Breadcrumb.Item>
-      </Breadcrumb>
+      <Breadcrumb className="pageBreadCrumb"></Breadcrumb>
 
       <Layout.Content>
         <Form layout="inline">

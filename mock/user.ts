@@ -66,7 +66,7 @@ export default {
         id: '3',
         menuType: '0',
         name: 'amis',
-        url: '/amis',
+        url: '/amis/SystemPermission',
         component: 'AmisPage',
       },
       {
@@ -97,7 +97,7 @@ export default {
         id: '3',
         menuType: '0',
         name: 'amis',
-        url: '/amis',
+        url: '/amis/SystemPermission',
       },
       {
         id: '4',

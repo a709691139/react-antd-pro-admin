@@ -3,9 +3,9 @@ import { createRef } from 'react';
 import { getSystemPermissions } from './services/ant-design-pro/api';
 
 import Page404 from '@/pages/404';
-import Test from '@/pages/Test';
-import AmisPage from '@/pages/Amis/AmisPage';
 import AmisEditPage from '@/pages/Amis/AmisEditPage';
+import AmisPage from '@/pages/Amis/AmisPage';
+import Test from '@/pages/Test';
 
 const comps: any = {
   Test,
@@ -49,7 +49,7 @@ function transExtraRoutes(tree: API.Permission[]) {
     });
 }
 
-export function patchClientRoutes({ routes }) {
+export function patchClientRoutes({ routes }: any) {
   console.log('patchClientRoutes', routes);
   // 根据 extraRoutes 对 routes 做一些修改
   // TODO
@@ -60,7 +60,10 @@ export function patchClientRoutes({ routes }) {
   //     element: <Page />,
   //   }],
   // });
-  routes.push(...transExtraRoutes(extraRoutes));
+  const item = routes.find((v: any) => v.id === 'ant-design-pro-layout');
+  if (item) {
+    item.children.push(...transExtraRoutes(extraRoutes));
+  }
 }
 
 export function render(oldRender: any) {
@@ -92,7 +95,6 @@ export function transMenu(tree: API.Permission[]): MenuDataItem[] {
         name: v.name,
         path: v.url,
         redirect: v.redirect,
-        menuRender: v.isHidden === '0',
         icon: v.icon,
         locale: false,
       };

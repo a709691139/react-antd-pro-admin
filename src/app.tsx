@@ -16,10 +16,12 @@ import {
 } from './services/ant-design-pro/api';
 export { patchClientRoutes, render } from './fetchRoutes';
 
-import 'amis/lib/themes/cxd.css';
+import '@fortawesome/fontawesome-free/css/all.css';
+import '@fortawesome/fontawesome-free/css/v4-shims.css';
 import 'amis/lib/helper.css';
-import 'amis/sdk/iconfont.css';
 import 'amis/lib/themes/antd.css';
+import 'amis/lib/themes/cxd.css';
+import 'amis/sdk/iconfont.css';
 
 const isDev = process.env.NODE_ENV === 'development';
 const loginPath = '/user/login';
@@ -149,6 +151,7 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
         console.log('getMenuData', menu);
         return menu;
       },
+      locale: false,
     },
     menuItemRender: (item, defaultDom, _menuProps) => {
       const props: LinkProps = {

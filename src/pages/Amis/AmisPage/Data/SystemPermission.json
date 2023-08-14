@@ -1,0 +1,468 @@
+{
+  "type": "page",
+  "body": [
+    {
+      "filterTogglable": false,
+      "syncLocation": false,
+      "className": "",
+      "type": "crud",
+      "affixHeader": true,
+      "autoFillHeight": true,
+      "filter": {
+        "labelWidth": 120,
+        "title": [
+          "<span style='line-height:30px;'><a href='/page/static/sys/page?code=menu' target='_blank'>菜单管理</a></span>",
+          {
+            "level": "success",
+            "icon": "fa fa-download",
+            "className": "m-l float-right relative jqp-top-btn",
+            "label": "导出",
+            "type": "button",
+            "url": "/admin/page/crudExport/menu?1=1&q__menuCode=${q__menuCode}&q__menuName=${q__menuName}&q__menuType=${q__menuType}&q__whetherButton=${q__whetherButton}",
+            "actionType": "url",
+            "id": "u:8f192f045131"
+          },
+          {
+            "icon": "fa fa-magnifying-glass",
+            "className": "m-l float-right relative jqp-top-btn",
+            "label": "查询",
+            "type": "button",
+            "actionType": "submit",
+            "primary": true,
+            "id": "u:4207db88b88c"
+          }
+        ],
+        "body": [
+          {
+            "columns": [
+              {
+                "xs": 12,
+                "sm": 6,
+                "md": 4,
+                "lg": 3,
+                "columnClassName": "mb-1",
+                "body": [
+                  {
+                    "clearable": true,
+                    "label": "菜单编号",
+                    "type": "input-text",
+                    "name": "q__menuCode",
+                    "placeholder": "菜单编号",
+                    "value": "",
+                    "labelRemark": "menu_code-",
+                    "id": "u:74df4044ba8d"
+                  }
+                ],
+                "id": "u:b1e68792bf2e"
+              },
+              {
+                "xs": 12,
+                "sm": 6,
+                "md": 4,
+                "lg": 3,
+                "columnClassName": "mb-1",
+                "body": [
+                  {
+                    "clearable": true,
+                    "label": "菜单名称",
+                    "type": "input-text",
+                    "name": "q__menuName",
+                    "placeholder": "菜单名称",
+                    "value": "",
+                    "labelRemark": "menu_name-",
+                    "id": "u:169ca26dd423"
+                  }
+                ],
+                "id": "u:e591c7fbb32b"
+              },
+              {
+                "xs": 12,
+                "sm": 6,
+                "md": 4,
+                "lg": 3,
+                "columnClassName": "mb-1",
+                "body": [
+                  {
+                    "clearable": true,
+                    "label": "菜单类型",
+                    "submitOnChange": true,
+                    "type": "select",
+                    "name": "q__menuType",
+                    "options": [
+                      { "label": "后台菜单", "value": "1" },
+                      { "label": "前台菜单", "value": "2" }
+                    ],
+                    "placeholder": "菜单类型",
+                    "value": "",
+                    "labelRemark": "menu_type-<a href='/crud/dic?q__dicCode=menuType' target='_blank'>menuType</a>",
+                    "id": "u:30a489bd8fbb"
+                  }
+                ],
+                "id": "u:b13f40192fe2"
+              },
+              {
+                "xs": 12,
+                "sm": 6,
+                "md": 4,
+                "lg": 3,
+                "columnClassName": "mb-1",
+                "body": [
+                  {
+                    "clearable": true,
+                    "label": "是否按钮",
+                    "submitOnChange": true,
+                    "type": "select",
+                    "name": "q__whetherButton",
+                    "options": [
+                      { "label": "是", "value": "YES" },
+                      { "label": "否", "value": "NO" }
+                    ],
+                    "placeholder": "是否按钮",
+                    "value": "",
+                    "labelRemark": "whether_button-<a href='/crud/dic?q__dicCode=whether' target='_blank'>whether</a>",
+                    "id": "u:19f011474457"
+                  }
+                ],
+                "id": "u:9bc2102d2bf0"
+              }
+            ],
+            "type": "grid",
+            "id": "u:ad1b9a21d0fd"
+          }
+        ],
+        "mode": "horizontal",
+        "submitText": "",
+        "actions": [],
+        "id": "u:5c21173a64ed"
+      },
+      "name": "mainTable",
+      "bulkActions": [],
+      "id": "mainTable",
+      "api": {
+        "method": "get",
+        "url": "/api/permission/page",
+        "responseData": {
+          "&": "$$"
+        }
+      },
+      "headerToolbar": [
+        "filter-toggler",
+        {
+          "level": "primary",
+          "tooltip": "<a href='/page/static/sys/form?code=sysMenuForm' target='_blank'>菜单表单</a>",
+          "icon": "fa fa-plus",
+          "label": "新增",
+          "type": "button",
+          "actionType": "dialog",
+          "dialog": {
+            "title": [
+              "新增-<a href='/page/static/sys/form?code=sysMenuForm' target='_blank'>菜单表单</a>"
+            ],
+            "body": {
+              "initApi": "post:/admin/common/sysMenuForm/get?id=${id}",
+              "labelWidth": 120,
+              "type": "form",
+              "title": "",
+              "body": [
+                {
+                  "clearable": true,
+                  "columnClassName": "mb-0",
+                  "label": "",
+                  "type": "hidden",
+                  "md": 12,
+                  "name": "id",
+                  "sm": 12,
+                  "xs": 12,
+                  "lg": 12,
+                  "placeholder": "主键",
+                  "value": "",
+                  "labelRemark": "id-"
+                },
+                {
+                  "columns": [
+                    {
+                      "clearable": true,
+                      "joinValues": true,
+                      "pickerSchema": {
+                        "className": "",
+                        "autoFillHeight": true,
+                        "mode": "table",
+                        "filter": {
+                          "title": [
+                            "<span style='line-height:30px;'>菜单管理</span>",
+                            {
+                              "level": "warning",
+                              "className": "mr-1 float-right relative jqp-top-btn",
+                              "label": "重置",
+                              "type": "button",
+                              "actionType": "reset"
+                            },
+                            {
+                              "className": "m-l float-right relative jqp-top-btn",
+                              "label": "查询",
+                              "type": "button",
+                              "actionType": "submit",
+                              "primary": true
+                            }
+                          ],
+                          "body": {
+                            "columns": [
+                              {
+                                "clearable": true,
+                                "columnClassName": "mb-1",
+                                "label": "菜单编号",
+                                "type": "input-text",
+                                "md": 4,
+                                "name": "q__menuCode",
+                                "sm": 6,
+                                "xs": 12,
+                                "lg": 3,
+                                "placeholder": "菜单编号",
+                                "value": "",
+                                "labelRemark": "menu_code-"
+                              },
+                              {
+                                "clearable": true,
+                                "columnClassName": "mb-1",
+                                "label": "菜单名称",
+                                "type": "input-text",
+                                "md": 4,
+                                "name": "q__menuName",
+                                "sm": 6,
+                                "xs": 12,
+                                "lg": 3,
+                                "placeholder": "菜单名称",
+                                "value": "",
+                                "labelRemark": "menu_name-"
+                              },
+                              {
+                                "clearable": true,
+                                "columnClassName": "mb-1",
+                                "label": "菜单类型",
+                                "submitOnChange": true,
+                                "type": "select",
+                                "md": 4,
+                                "name": "q__menuType",
+                                "options": [
+                                  { "label": "后台菜单", "value": "1" },
+                                  { "label": "前台菜单", "value": "2" }
+                                ],
+                                "sm": 6,
+                                "xs": 12,
+                                "lg": 3,
+                                "placeholder": "菜单类型",
+                                "value": "",
+                                "labelRemark": "menu_type-<a href='/crud/dic?q__dicCode=menuType' target='_blank'>menuType</a>"
+                              },
+                              {
+                                "clearable": true,
+                                "columnClassName": "mb-1",
+                                "label": "是否按钮",
+                                "submitOnChange": true,
+                                "type": "select",
+                                "md": 4,
+                                "name": "q__whetherButton",
+                                "options": [
+                                  { "label": "是", "value": "YES" },
+                                  { "label": "否", "value": "NO" }
+                                ],
+                                "sm": 6,
+                                "xs": 12,
+                                "lg": 3,
+                                "placeholder": "是否按钮",
+                                "value": "",
+                                "labelRemark": "whether_button-<a href='/crud/dic?q__dicCode=whether' target='_blank'>whether</a>"
+                              }
+                            ],
+                            "type": "grid"
+                          },
+                          "mode": "horizontal",
+                          "submitText": ""
+                        },
+                        "name": "menuSelector"
+                      },
+                      "columnClassName": "mb-3",
+                      "autoFill": {},
+                      "label": "父菜单",
+                      "source": "post:/admin/page/selector/menu?parentId=$parentId&id=${id}",
+                      "type": "picker",
+                      "valueField": "id",
+                      "labelField": "menuName",
+                      "size": "lg",
+                      "md": 12,
+                      "name": "parentId",
+                      "sm": 12,
+                      "xs": 12,
+                      "lg": 12,
+                      "placeholder": "父菜单",
+                      "value": "",
+                      "labelRemark": "parentId-<a href='/page/static/sys/page?code=menu' target='_blank'>菜单管理</a>"
+                    },
+                    {
+                      "clearable": true,
+                      "columnClassName": "mb-3",
+                      "label": "菜单编号",
+                      "type": "input-text",
+                      "required": true,
+                      "md": 12,
+                      "name": "menuCode",
+                      "sm": 12,
+                      "xs": 12,
+                      "lg": 12,
+                      "placeholder": "菜单编号",
+                      "value": "",
+                      "labelRemark": "menuCode-"
+                    },
+                    {
+                      "clearable": true,
+                      "columnClassName": "mb-3",
+                      "label": "菜单名称",
+                      "type": "input-text",
+                      "required": true,
+                      "md": 12,
+                      "name": "menuName",
+                      "sm": 12,
+                      "xs": 12,
+                      "lg": 12,
+                      "placeholder": "菜单名称",
+                      "value": "",
+                      "labelRemark": "menuName-"
+                    },
+                    {
+                      "clearable": true,
+                      "columnClassName": "mb-3",
+                      "label": "菜单类型",
+                      "type": "select",
+                      "required": true,
+                      "md": 12,
+                      "name": "menuType",
+                      "options": [
+                        { "label": "后台菜单", "value": "1" },
+                        { "label": "前台菜单", "value": "2" }
+                      ],
+                      "sm": 12,
+                      "xs": 12,
+                      "lg": 12,
+                      "placeholder": "菜单类型",
+                      "value": "",
+                      "labelRemark": "menuType-<a href='/crud/dic?q__dicCode=menuType' target='_blank'>menuType</a>"
+                    },
+                    {
+                      "clearable": true,
+                      "columnClassName": "mb-3",
+                      "label": "链接地址",
+                      "type": "input-text",
+                      "md": 12,
+                      "name": "url",
+                      "sm": 12,
+                      "xs": 12,
+                      "lg": 12,
+                      "placeholder": "链接地址",
+                      "value": "",
+                      "labelRemark": "url-"
+                    },
+                    {
+                      "clearable": true,
+                      "columnClassName": "mb-3",
+                      "label": "序号",
+                      "type": "input-number",
+                      "required": true,
+                      "md": 12,
+                      "name": "seq",
+                      "sm": 12,
+                      "xs": 12,
+                      "lg": 12,
+                      "placeholder": "序号",
+                      "value": "",
+                      "labelRemark": "seq-"
+                    },
+                    {
+                      "clearable": true,
+                      "columnClassName": "mb-3",
+                      "description": "<a href='http://lyear.itshubao.com/lyear_ui_icons.html' target='_blank'>搜索图标</a>",
+                      "label": "图标",
+                      "type": "input-text",
+                      "md": 12,
+                      "name": "icon",
+                      "sm": 12,
+                      "xs": 12,
+                      "lg": 12,
+                      "placeholder": "图标",
+                      "value": "",
+                      "labelRemark": "icon-"
+                    },
+                    {
+                      "clearable": true,
+                      "columnClassName": "mb-3",
+                      "label": "是否按钮",
+                      "type": "select",
+                      "required": true,
+                      "md": 12,
+                      "name": "whetherButton",
+                      "options": [
+                        { "label": "是", "value": "YES" },
+                        { "label": "否", "value": "NO" }
+                      ],
+                      "sm": 12,
+                      "xs": 12,
+                      "lg": 12,
+                      "placeholder": "是否按钮",
+                      "value": "",
+                      "labelRemark": "whetherButton-<a href='/crud/dic?q__dicCode=whether' target='_blank'>whether</a>"
+                    }
+                  ],
+                  "type": "grid"
+                }
+              ],
+              "mode": "horizontal",
+              "api": "post:/admin/common/sysMenuForm/saveOrUpdate"
+            }
+          },
+          "id": "u:2818e18dcfaf"
+        },
+        {
+          "level": "primary",
+          "tooltip": "get:/admin/menu/generateCode",
+          "confirmText": "确定重新编号操作吗?",
+          "label": "重新编号",
+          "type": "button",
+          "actionType": "ajax",
+          "api": "get:/admin/menu/generateCode",
+          "id": "u:3313d5c8c05a"
+        }
+      ],
+      "columns": [
+        {
+          "name": "id",
+          "label": "ID"
+        },
+        {
+          "name": "name",
+          "label": "名称"
+        },
+        {
+          "name": "type",
+          "label": "类型"
+        },
+        {
+          "name": "icon",
+          "label": "图标"
+        },
+        {
+          "name": "component",
+          "label": "组件"
+        },
+        {
+          "name": "url",
+          "label": "url"
+        },
+        {
+          "name": "sortNo",
+          "label": "排序"
+        }
+      ]
+    }
+  ],
+  "definitions": {},
+  "id": "u:c837fb8ef54e"
+}
