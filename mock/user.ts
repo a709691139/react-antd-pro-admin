@@ -55,6 +55,7 @@ export default {
         url: '/system',
         children: [
           {
+            parentId: '2',
             id: '2-1',
             menuType: '1',
             name: '用户管理',

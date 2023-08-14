@@ -24,7 +24,7 @@ const AmisPage: FC<any> = () => {
   });
 
   return (
-    <PageContainer content="欢迎使用 ProLayout 组件">
+    <PageContainer header={{ title: '' }}>
       <div>
         <ToastComponent
           theme={config.theme}
