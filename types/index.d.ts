@@ -118,3 +118,8 @@ export namespace API {
     currentAuthority: string;
   };
 }
+
+export type InitialState {
+  currentUser?: API.CurrentUser; 
+  permissions: API.Permission[]
+}

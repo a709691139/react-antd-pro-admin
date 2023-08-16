@@ -1,6 +1,6 @@
+import { getCommonHeaders } from '@/requestConfig';
 import axios from 'axios';
 import copy from 'copy-to-clipboard';
-import {getCommonHeaders} from "@/requestConfig"
 
 const env = {
   // 下面三个接口必须实现
@@ -21,9 +21,9 @@ const env = {
     }
 
     config.headers = {
-      ...(headers||{}),
+      ...(headers || {}),
       ...getCommonHeaders(),
-    }
+    };
 
     if (method !== 'post' && method !== 'put' && method !== 'patch') {
       if (data) {
@@ -52,6 +52,7 @@ const env = {
     copy(content);
     // toast.success("内容已复制到粘贴板");
   },
+  enableAMISDebug: REACT_APP_ENV === 'dev',
 
   // 后面这些接口可以不用实现
 

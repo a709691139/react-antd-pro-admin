@@ -1,4 +1,3 @@
-import Footer from '@/components/Footer';
 import { Question, SelectLang } from '@/components/RightContent';
 import { LinkOutlined } from '@ant-design/icons';
 import type { Settings as LayoutSettings } from '@ant-design/pro-components';
@@ -26,7 +25,12 @@ import 'amis/sdk/iconfont.css';
 const isDev = process.env.NODE_ENV === 'development';
 const loginPath = '/user/login';
 
-type FetchUserInfo = () => Promise<{ permissions: API.Permission[]; currentUser: API.CurrentUser }>;
+type FetchUserInfo = () => Promise<{
+  permissions: API.Permission[];
+  currentUser: API.CurrentUser;
+  permissionKeys: { [key: string]: boolean };
+}>;
+
 /**
  * @see  https://umijs.org/zh-CN/plugins/plugin-initial-state
  * */
@@ -34,6 +38,7 @@ export async function getInitialState(): Promise<{
   settings?: Partial<LayoutSettings>;
   currentUser?: API.CurrentUser;
   permissions?: API.Permission[];
+  permissionKeys: { [key: string]: boolean };
   loading?: boolean;
   fetchUserInfo?: FetchUserInfo;
 }> {
@@ -46,9 +51,16 @@ export async function getInitialState(): Promise<{
           skipErrorHandler: true,
         }),
       ]);
+      const permissions = resList[0].data;
+      const permissionKeys: any = {};
+      permissions?.forEach((v) => {
+        permissionKeys[v.perms || v.url] = true;
+      });
+
       return {
-        permissions: resList[0].data,
+        permissions,
         currentUser: resList[1].data,
+        permissionKeys,
       };
     } catch (error) {
       history.push(loginPath);
@@ -65,9 +77,11 @@ export async function getInitialState(): Promise<{
       settings: defaultSettings as Partial<LayoutSettings>,
     };
   }
+
   return {
     fetchUserInfo,
     settings: defaultSettings as Partial<LayoutSettings>,
+    permissionKeys: {},
   };
 }
 

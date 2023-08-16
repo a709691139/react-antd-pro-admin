@@ -3,6 +3,10 @@
   "type": "page",
   "body": [
     {
+      "type": "tpl",
+      "tpl": "permissionKeys is ${permissionKeys|json}"
+    },
+    {
       "filterTogglable": false,
       "syncLocation": false,
       "className": "",
@@ -40,187 +44,27 @@
           "icon": "fa fa-plus",
           "label": "新增",
           "type": "button",
-          "actionType": "dialog",
-          "dialog": {
-            "title": ["新增"],
-            "body": {
-              "mode": "horizontal",
-              "api": "post:/v1/permission/add",
-              "labelWidth": 120,
-              "type": "form",
-              "id": "menuAddForm",
-              "title": "",
-              "body": [
+          "id": "addButton",
+          "onEvent": {
+            "click": {
+              "actions": [
                 {
-                  "type": "grid",
-                  "columns": [
-                    {
-                      "type": "hidden",
-                      "name": "id"
-                    },
-                    {
-                      "label": "菜单类型",
-                      "placeholder": "菜单类型",
-                      "name": "menuType",
-                      "type": "button-group-select",
-                      "options": [
-                        { "label": "一级菜单", "value": "0" },
-                        { "label": "子菜单", "value": "1" },
-                        { "label": "按钮权限", "value": "2" }
-                      ],
-                      "required": true,
-                      "clearable": false,
-                      "columnClassName": "mb-3",
-                      "md": 12,
-                      "sm": 12,
-                      "xs": 12,
-                      "lg": 12,
-                      "value": "0",
-                      "onEvent": {
-                        "change": {
-                          "actions": [
-                            {
-                              "actionType": "setValue",
-                              "componentId": "menuAddForm",
-                              "args": {
-                                "value": {
-                                  "parentId": "${ menuType==0? '1': null }"
-                                }
-                              }
-                            }
-                          ]
-                        }
-                      }
-                    },
-                    {
-                      "type": "tree-select",
-                      "name": "parentId",
-                      "label": "上级菜单",
-                      "columnClassName": "mb-3",
-                      "required": true,
-                      "searchable": true,
-                      "disabledOn": "${ menuType=='0' }",
-                      "source": {
-                        "method": "get",
-                        "url": "/api/permission/page",
-                        "data": {
-                          "type": "1,2"
-                        }
-                      },
-                      "labelField": "name",
-                      "valueField": "id",
-                      "value": "1",
-                      "md": 12,
-                      "sm": 12,
-                      "xs": 12,
-                      "lg": 12
-                    },
-                    {
-                      "clearable": true,
-                      "columnClassName": "mb-3",
-                      "label": "菜单名称",
-                      "type": "input-text",
-                      "required": true,
-                      "md": 12,
-                      "name": "name",
-                      "sm": 12,
-                      "xs": 12,
-                      "lg": 12,
-                      "placeholder": "菜单名称",
-                      "value": ""
-                    },
-                    {
-                      "label": "前端组件名",
-                      "name": "component",
-                      "type": "input-text",
-                      "value": "",
-                      "clearable": true,
-                      "columnClassName": "mb-3",
-                      "md": 12,
-                      "sm": 12,
-                      "xs": 12,
-                      "lg": 12,
-                      "visibleOn": "${menuType !=='2' }",
-                      "clearValueOnHidden": true
-                    },
-                    {
-                      "label": "菜单权限编码",
-                      "name": "perms",
-                      "type": "input-text",
-                      "value": "",
-                      "clearable": true,
-                      "columnClassName": "mb-3",
-                      "md": 12,
-                      "sm": 12,
-                      "xs": 12,
-                      "lg": 12,
-                      "visibleOn": "${menuType =='2' }",
-                      "clearValueOnHidden": true
-                    },
-                    {
-                      "label": "菜单图标",
-                      "name": "icon",
-                      "type": "input-text",
-                      "value": "",
-                      "clearable": true,
-                      "columnClassName": "mb-3",
-                      "md": 12,
-                      "sm": 12,
-                      "xs": 12,
-                      "lg": 12,
-                      "visibleOn": "${menuType !=='2' }",
-                      "clearValueOnHidden": true
-                    },
-                    {
-                      "label": "排序",
-                      "name": "sortNo",
-                      "type": "input-number",
-                      "value": "",
-                      "columnClassName": "mb-3",
-                      "md": 12,
-                      "sm": 12,
-                      "xs": 12,
-                      "lg": 12
-                    },
-                    {
-                      "label": "是否缓存路由",
-                      "name": "isKeepAlive",
-                      "type": "select",
-                      "options": [
-                        {
-                          "label": "是",
-                          "value": "1"
-                        },
-                        {
-                          "label": "否",
-                          "value": "0"
-                        }
-                      ],
-                      "value": "",
-                      "clearable": true,
-                      "columnClassName": "mb-3",
-                      "md": 12,
-                      "sm": 12,
-                      "xs": 12,
-                      "lg": 12,
-                      "visibleOn": "${menuType !='2' }",
-                      "clearValueOnHidden": true
-                    },
-                    {
-                      "label": "跳转地址",
-                      "name": "redirect",
-                      "type": "input-text",
-                      "value": "",
-                      "clearable": true,
-                      "columnClassName": "mb-3",
-                      "md": 12,
-                      "sm": 12,
-                      "xs": 12,
-                      "lg": 12,
-                      "visibleOn": "${menuType !='2' }",
-                      "clearValueOnHidden": true
+                  "actionType": "dialog",
+                  "dialog": {
+                    "title": ["新增"],
+                    "closeOnEsc": true,
+                    "closeOnOutside": true,
+                    "body": {
+                      "mode": "horizontal",
+                      "api": "post:/v1/permission/add",
+                      "labelWidth": 120,
+                      "type": "form",
+                      "debug": true,
+                      "name": "menuEditForm",
+                      "title": "",
+                      "body": { "$ref": "editDialogBody" }
                     }
-                  ]
+                  }
                 }
               ]
             }
@@ -235,7 +79,8 @@
           "searchable": {
             "type": "input-text",
             "name": "id",
-            "label": "id"
+            "label": "id",
+            "placeholder": "请输入"
           }
         },
         {
@@ -287,15 +132,6 @@
           "type": "operation",
           "buttons": [
             {
-              "label": "删除",
-              "type": "button",
-              "level": "danger",
-              "icon": "fa fa-trash-can",
-              "actionType": "ajax",
-              "confirmText": "确定删除操作吗?",
-              "api": "/api/permission/remove/${id}"
-            },
-            {
               "label": "编辑",
               "type": "button",
               "level": "default",
@@ -303,198 +139,223 @@
               "actionType": "dialog",
               "dialog": {
                 "title": ["编辑"],
+                "closeOnEsc": true,
+                "closeOnOutside": true,
                 "body": {
                   "mode": "horizontal",
                   "api": "post:/v1/permission/update",
                   "labelWidth": 120,
                   "type": "form",
-                  "id": "menuAddForm",
+                  "name": "menuEditForm",
                   "title": "",
-                  "body": [
+                  "body": { "$ref": "editDialogBody" }
+                }
+              }
+            },
+            {
+              "label": "添加下级",
+              "type": "button",
+              "hiddenOn": "${type=='1'}",
+              "onEvent": {
+                "click": {
+                  "actions": [
                     {
-                      "type": "grid",
-                      "columns": [
-                        {
-                          "type": "hidden",
-                          "name": "id"
-                        },
-                        {
-                          "label": "菜单类型",
-                          "placeholder": "菜单类型",
-                          "name": "menuType",
-                          "type": "button-group-select",
-                          "options": [
-                            { "label": "一级菜单", "value": "0" },
-                            { "label": "子菜单", "value": "1" },
-                            { "label": "按钮权限", "value": "2" }
-                          ],
-                          "required": true,
-                          "clearable": false,
-                          "columnClassName": "mb-3",
-                          "md": 12,
-                          "sm": 12,
-                          "xs": 12,
-                          "lg": 12,
-                          "value": "0",
-                          "onEvent": {
-                            "change": {
-                              "actions": [
-                                {
-                                  "actionType": "setValue",
-                                  "componentId": "menuAddForm",
-                                  "args": {
-                                    "value": {
-                                      "parentId": "${ menuType==0? '1': null }"
-                                    }
-                                  }
-                                }
-                              ]
-                            }
-                          }
-                        },
-                        {
-                          "type": "tree-select",
-                          "name": "parentId",
-                          "label": "上级菜单",
-                          "columnClassName": "mb-3",
-                          "required": true,
-                          "searchable": true,
-                          "disabledOn": "${ menuType=='0' }",
-                          "source": {
-                            "method": "get",
-                            "url": "/api/permission/page",
-                            "data": {
-                              "type": "1,2"
-                            }
-                          },
-                          "labelField": "name",
-                          "valueField": "id",
-                          "value": "1",
-                          "md": 12,
-                          "sm": 12,
-                          "xs": 12,
-                          "lg": 12
-                        },
-                        {
-                          "clearable": true,
-                          "columnClassName": "mb-3",
-                          "label": "菜单名称",
-                          "type": "input-text",
-                          "required": true,
-                          "md": 12,
-                          "name": "name",
-                          "sm": 12,
-                          "xs": 12,
-                          "lg": 12,
-                          "placeholder": "菜单名称",
-                          "value": ""
-                        },
-                        {
-                          "label": "前端组件名",
-                          "name": "component",
-                          "type": "input-text",
-                          "value": "",
-                          "clearable": true,
-                          "columnClassName": "mb-3",
-                          "md": 12,
-                          "sm": 12,
-                          "xs": 12,
-                          "lg": 12,
-                          "visibleOn": "${menuType !=='2' }",
-                          "clearValueOnHidden": true
-                        },
-                        {
-                          "label": "菜单权限编码",
-                          "name": "perms",
-                          "type": "input-text",
-                          "value": "",
-                          "clearable": true,
-                          "columnClassName": "mb-3",
-                          "md": 12,
-                          "sm": 12,
-                          "xs": 12,
-                          "lg": 12,
-                          "visibleOn": "${menuType =='2' }",
-                          "clearValueOnHidden": true
-                        },
-                        {
-                          "label": "菜单图标",
-                          "name": "icon",
-                          "type": "input-text",
-                          "value": "",
-                          "clearable": true,
-                          "columnClassName": "mb-3",
-                          "md": 12,
-                          "sm": 12,
-                          "xs": 12,
-                          "lg": 12,
-                          "visibleOn": "${menuType !=='2' }",
-                          "clearValueOnHidden": true
-                        },
-                        {
-                          "label": "排序",
-                          "name": "sortNo",
-                          "type": "input-number",
-                          "value": "",
-                          "columnClassName": "mb-3",
-                          "md": 12,
-                          "sm": 12,
-                          "xs": 12,
-                          "lg": 12
-                        },
-                        {
-                          "label": "是否缓存路由",
-                          "name": "isKeepAlive",
-                          "type": "select",
-                          "options": [
-                            {
-                              "label": "是",
-                              "value": "1"
-                            },
-                            {
-                              "label": "否",
-                              "value": "0"
-                            }
-                          ],
-                          "value": "",
-                          "clearable": true,
-                          "columnClassName": "mb-3",
-                          "md": 12,
-                          "sm": 12,
-                          "xs": 12,
-                          "lg": 12,
-                          "visibleOn": "${menuType !='2' }",
-                          "clearValueOnHidden": true
-                        },
-                        {
-                          "label": "跳转地址",
-                          "name": "redirect",
-                          "type": "input-text",
-                          "value": "",
-                          "clearable": true,
-                          "columnClassName": "mb-3",
-                          "md": 12,
-                          "sm": 12,
-                          "xs": 12,
-                          "lg": 12,
-                          "visibleOn": "${menuType !='2' }",
-                          "clearValueOnHidden": true
-                        }
-                      ]
+                      "actionType": "click",
+                      "componentId": "addButton",
+                      "args": {
+                        "parentId": "${id}",
+                        "menuType": "2"
+                      }
                     }
                   ]
                 }
               }
             },
             {
-              "label": "添加下级todo",
-              "type": "button"
+              "label": "删除",
+              "type": "button",
+              "level": "danger",
+              "icon": "fa fa-trash-can",
+              "actionType": "ajax",
+              "confirmText": "确定删除操作吗?",
+              "api": "/api/permission/remove/${id}"
             }
           ]
         }
       ]
     }
   ],
-  "definitions": {},
-  "id": "u:c837fb8ef54e"
+  "definitions": {
+    "editDialogBody": {
+      "type": "grid",
+      "columns": [
+        {
+          "type": "hidden",
+          "name": "id"
+        },
+        {
+          "label": "菜单类型",
+          "placeholder": "菜单类型",
+          "name": "menuType",
+          "type": "button-group-select",
+          "options": [
+            { "label": "一级菜单", "value": "0" },
+            { "label": "子菜单", "value": "1" },
+            { "label": "按钮权限", "value": "2" }
+          ],
+          "required": true,
+          "clearable": false,
+          "columnClassName": "mb-3",
+          "md": 12,
+          "sm": 12,
+          "xs": 12,
+          "lg": 12,
+          "value": "0",
+          "onEvent": {
+            "change": {
+              "actions": [
+                {
+                  "actionType": "setValue",
+                  "componentName": "menuEditForm",
+                  "args": {
+                    "value": {
+                      "parentId": "${ menuType==0? '1': parentId }"
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "type": "tree-select",
+          "name": "parentId",
+          "label": "上级菜单",
+          "columnClassName": "mb-3",
+          "required": true,
+          "searchable": true,
+          "disabledOn": "${ menuType=='0' }",
+          "source": {
+            "method": "get",
+            "url": "/api/permission/page",
+            "data": {
+              "type": "1,2"
+            }
+          },
+          "labelField": "name",
+          "valueField": "id",
+          "value": "1",
+          "md": 12,
+          "sm": 12,
+          "xs": 12,
+          "lg": 12
+        },
+        {
+          "clearable": true,
+          "columnClassName": "mb-3",
+          "label": "菜单名称",
+          "type": "input-text",
+          "required": true,
+          "md": 12,
+          "name": "name",
+          "sm": 12,
+          "xs": 12,
+          "lg": 12,
+          "placeholder": "菜单名称",
+          "value": ""
+        },
+        {
+          "label": "前端组件名",
+          "name": "component",
+          "type": "input-text",
+          "value": "",
+          "clearable": true,
+          "columnClassName": "mb-3",
+          "md": 12,
+          "sm": 12,
+          "xs": 12,
+          "lg": 12,
+          "visibleOn": "${menuType !=='2' }",
+          "clearValueOnHidden": true
+        },
+        {
+          "label": "菜单权限编码",
+          "name": "perms",
+          "type": "input-text",
+          "value": "",
+          "clearable": true,
+          "columnClassName": "mb-3",
+          "md": 12,
+          "sm": 12,
+          "xs": 12,
+          "lg": 12,
+          "visibleOn": "${menuType =='2' }",
+          "clearValueOnHidden": true
+        },
+        {
+          "label": "菜单图标",
+          "name": "icon",
+          "type": "input-text",
+          "value": "",
+          "clearable": true,
+          "columnClassName": "mb-3",
+          "md": 12,
+          "sm": 12,
+          "xs": 12,
+          "lg": 12,
+          "visibleOn": "${menuType !=='2' }",
+          "clearValueOnHidden": true
+        },
+        {
+          "label": "排序",
+          "name": "sortNo",
+          "type": "input-number",
+          "value": "",
+          "columnClassName": "mb-3",
+          "md": 12,
+          "sm": 12,
+          "xs": 12,
+          "lg": 12
+        },
+        {
+          "label": "是否缓存路由",
+          "name": "isKeepAlive",
+          "type": "select",
+          "options": [
+            {
+              "label": "是",
+              "value": "1"
+            },
+            {
+              "label": "否",
+              "value": "0"
+            }
+          ],
+          "value": "",
+          "clearable": true,
+          "columnClassName": "mb-3",
+          "md": 12,
+          "sm": 12,
+          "xs": 12,
+          "lg": 12,
+          "visibleOn": "${menuType !='2' }",
+          "clearValueOnHidden": true
+        },
+        {
+          "label": "跳转地址",
+          "name": "redirect",
+          "type": "input-text",
+          "value": "",
+          "clearable": true,
+          "columnClassName": "mb-3",
+          "md": 12,
+          "sm": 12,
+          "xs": 12,
+          "lg": 12,
+          "visibleOn": "${menuType !='2' }",
+          "clearValueOnHidden": true
+        }
+      ]
+    }
+  }
 }

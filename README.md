@@ -56,9 +56,30 @@ npm test
 
 You can view full document on our [official website](https://pro.ant.design). And welcome any feedback in our [github](https://github.com/ant-design/ant-design-pro).
 
+## amis 组件
 
-## 路由
-### amis组件
-- 渲染component: AmisPage
-- 编辑器component: AmisEditorPage
-- 本地json, url规则: /amis/:pageId, 根据pageId去读取对应json
+- 渲染 component: AmisPage
+- 编辑器 component: AmisEditorPage
+- 本地 json, url 规则: /amis/:pageId, 根据 pageId 去读取对应 json
+- 权限控制, { visibleOn: "${ permissions['todo'] }" }
+
+## 权限控制
+
+hooks 或者 window.checkPermission('todo')
+
+```tsx
+import { useAccess } from 'umi';
+
+const PageA = (props) => {
+  const { foo } = props;
+  const access = useAccess();
+
+  if (access.canReadFoo) {
+    // 如果可以读取 Foo，则...
+  }
+
+  return <>TODO</>;
+};
+
+export default PageA;
+```
