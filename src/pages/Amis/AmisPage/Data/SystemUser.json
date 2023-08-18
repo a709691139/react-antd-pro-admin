@@ -153,7 +153,7 @@
         },
         {
           "name": "status",
-          "label": "用户状态",
+          "label": "用户状态TODO",
           "type": "switch",
           "trueValue": "1",
           "falseValue": "0",
@@ -232,52 +232,34 @@
           "name": "id"
         },
         {
-          "label": "菜单类型",
-          "placeholder": "菜单类型",
-          "name": "menuType",
-          "type": "button-group-select",
-          "options": [
-            { "label": "一级菜单", "value": "0" },
-            { "label": "子菜单", "value": "1" },
-            { "label": "按钮权限", "value": "2" }
-          ],
-          "required": true,
-          "clearable": false,
+          "name": "username",
+          "label": "账号名",
+          "type": "input-text",
           "columnClassName": "mb-3",
           "md": 12,
           "sm": 12,
           "xs": 12,
-          "lg": 12,
-          "value": "0",
-          "onEvent": {
-            "change": {
-              "actions": [
-                {
-                  "actionType": "setValue",
-                  "componentName": "menuEditForm",
-                  "args": {
-                    "value": {
-                      "parentId": "${ menuType==0? '1': parentId }"
-                    }
-                  }
-                }
-              ]
-            }
-          }
+          "lg": 12
         },
         {
-          "clearable": true,
-          "columnClassName": "mb-3",
-          "label": "菜单名称",
+          "name": "alias",
+          "label": "别名",
           "type": "input-text",
-          "required": true,
+          "columnClassName": "mb-3",
           "md": 12,
-          "name": "name",
           "sm": 12,
           "xs": 12,
-          "lg": 12,
-          "placeholder": "菜单名称",
-          "value": ""
+          "lg": 12
+        },
+        {
+          "name": "avatar",
+          "label": "头像TODO",
+          "type": "input-image",
+          "columnClassName": "mb-3",
+          "md": 12,
+          "sm": 12,
+          "xs": 12,
+          "lg": 12
         }
       ]
     }
