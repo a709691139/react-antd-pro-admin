@@ -26,6 +26,84 @@ const getAccess = () => {
   return access;
 };
 
+const allMenus = [
+  {
+    id: '2',
+    name: '系统管理',
+    menuType: '0',
+    url: '/system',
+    children: [
+      {
+        parentId: '2',
+        id: '2-1',
+        menuType: '1',
+        name: '用户管理',
+        url: '/system/amis/SystemUser',
+        component: 'AmisPage',
+      },
+      {
+        parentId: '2',
+        id: '2-2',
+        menuType: '1',
+        name: '菜单管理',
+        url: '/system/amis/SystemPermission',
+        component: 'AmisPage',
+      },
+    ],
+  },
+  {
+    id: '3',
+    menuType: '0',
+    name: 'amis',
+    url: '/amis/SystemPermission',
+    component: 'AmisPage',
+  },
+  {
+    id: '4',
+    menuType: '0',
+    name: 'amis编辑器',
+    url: '/amis-editor',
+    component: 'AmisEditPage',
+  },
+];
+
+function createPermissions(parentId: string, tableName: string) {
+  const commons = [
+    {
+      name: '查询列表',
+      perms: 'page',
+    },
+    {
+      name: '查询详情',
+      perms: 'get',
+    },
+    {
+      name: '新增',
+      perms: 'create',
+    },
+    {
+      name: '编辑',
+      perms: 'update',
+    },
+    {
+      name: '删除',
+      perms: 'remove',
+    },
+    {
+      name: '导出excel',
+      perms: 'export_excel',
+    },
+  ];
+  return commons.map((v) => {
+    return {
+      ...v,
+      parentId,
+      perms: tableName + ':' + v.perms,
+      id: parentId + ':p:' + v.perms,
+    };
+  });
+}
+
 // 代码中会兼容本地 service mock 以及部署站点的静态数据
 export default {
   // 支持值为 Object 和 Array
@@ -47,64 +125,40 @@ export default {
   },
   'GET /api/permission/page': {
     success: true,
-    data: [
-      {
-        id: '2',
-        name: '系统管理',
-        menuType: '0',
-        url: '/system',
-        children: [
-          {
-            parentId: '2',
-            id: '2-1',
-            menuType: '1',
-            name: '用户管理',
-            url: 'system/user',
-          },
-        ],
-      },
-      {
-        id: '3',
-        menuType: '0',
-        name: 'amis',
-        url: '/amis/SystemPermission',
-        component: 'AmisPage',
-      },
-      {
-        id: '4',
-        menuType: '0',
-        name: 'amis编辑器',
-        url: '/amis-editor',
-        component: 'AmisEditPage',
-      },
-    ],
+    data: allMenus,
   },
-  'POST /api/permission/getCurrentUserPermissions': {
+  'POST /api/permission/getCurrentUserPermissions': (req: Request, res: Response) => {
+    const data: any[] = [];
+    function loop(tree: any[]) {
+      tree.forEach((item) => {
+        if (item.menuType !== '2') {
+          data.push({ ...item });
+        }
+        if (item.children) {
+          loop(item.children);
+        }
+      });
+    }
+    loop(allMenus);
+    data.push(...createPermissions('2-1', 'sys_user'));
+    data.push(...createPermissions('2-2', 'sys_permission'));
+    res.send({
+      success: true,
+      data,
+    });
+  },
+  'GET /api/sys_user/page': {
     success: true,
     data: [
       {
+        id: '1',
+        username: '哈哈',
+        status: '0',
+      },
+      {
         id: '2',
-        name: '系统管理',
-        menuType: '0',
-        url: '/system',
-      },
-      {
-        id: '2-1',
-        menuType: '1',
-        name: '用户管理',
-        url: '/system/user',
-      },
-      {
-        id: '3',
-        menuType: '0',
-        name: 'amis',
-        url: '/amis/SystemPermission',
-      },
-      {
-        id: '4',
-        menuType: '0',
-        name: 'amis编辑器',
-        url: '/amis-editor',
+        username: '233',
+        status: '1',
       },
     ],
   },

@@ -98,7 +98,8 @@ export function transMenu(tree: API.Permission[]): MenuDataItem[] {
         redirect: v.redirect,
         icon: v.icon,
       };
-      if (v.isHidden === '0' || !v.isHidden) {
+      if (v.isHidden === '1') {
+        route.children = undefined;
         return route;
       }
       route.children = undefined;

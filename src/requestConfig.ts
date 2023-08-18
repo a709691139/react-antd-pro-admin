@@ -1,7 +1,7 @@
 import type { RequestOptions } from '@@/plugin-request/request';
 import type { RequestConfig } from '@umijs/max';
-import { message, notification } from 'antd';
 import { request as myRequest } from '@umijs/max';
+import { message, notification } from 'antd';
 
 // 错误处理方案： 错误类型
 enum ErrorShowType {
@@ -32,12 +32,12 @@ export const request = <T>(url: string, opts: RequestOptions) => {
   return myRequest<ApiResponse<T>>(url, opts);
 };
 
-export const getCommonHeaders=()=>{
+export const getCommonHeaders = () => {
   return {
     token: localStorage.token,
     tenantId: TENANT_ID,
-  }
-}
+  };
+};
 
 /**
  * @name 错误处理

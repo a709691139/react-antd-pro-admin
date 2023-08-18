@@ -3,10 +3,6 @@
   "type": "page",
   "body": [
     {
-      "type": "tpl",
-      "tpl": "permissionKeys is ${permissionKeys|json}"
-    },
-    {
       "filterTogglable": false,
       "syncLocation": false,
       "className": "",
@@ -23,6 +19,7 @@
         }
       },
       "autoGenerateFilter": {
+        "columnsNum": 4,
         "showBtnToolbar": false
       },
       "headerToolbar": [
@@ -30,6 +27,7 @@
         {
           "type": "export-excel",
           "label": "导出excel",
+          "visibleOn": "${ permissionKeys['sys_permission:export_excel'] }",
           "api": {
             "url": "/api/permission/page",
             "method": "get",
@@ -43,6 +41,7 @@
           "level": "primary",
           "icon": "fa fa-plus",
           "label": "新增",
+          "visibleOn": "${ permissionKeys['sys_permission:create'] }",
           "type": "button",
           "id": "addButton",
           "onEvent": {
@@ -56,10 +55,9 @@
                     "closeOnOutside": true,
                     "body": {
                       "mode": "horizontal",
-                      "api": "post:/v1/permission/add",
+                      "api": "post:/api/permission/create",
                       "labelWidth": 120,
                       "type": "form",
-                      "debug": true,
                       "name": "menuEditForm",
                       "title": "",
                       "body": { "$ref": "editDialogBody" }
@@ -75,7 +73,7 @@
         {
           "name": "id",
           "label": "ID",
-          "toggled": false,
+          "toggled": true,
           "searchable": {
             "type": "input-text",
             "name": "id",
@@ -88,20 +86,20 @@
           "label": "名称"
         },
         {
-          "name": "type",
+          "name": "menuType",
           "label": "类型",
-          "filterable": {
-            "options": [
-              { "label": "一级菜单", "value": "0" },
-              { "label": "子菜单", "value": "1" },
-              { "label": "按钮权限", "value": "2" }
-            ]
+          "type": "mapping",
+          "map": {
+            "0": "一级菜单",
+            "1": "子菜单",
+            "2": "按钮权限"
           },
           "searchable": {
             "type": "select",
-            "name": "type",
+            "name": "menuType",
             "label": "类型",
             "searchable": true,
+            "clearable": true,
             "options": [
               { "label": "一级菜单", "value": "0" },
               { "label": "子菜单", "value": "1" },
@@ -134,6 +132,7 @@
             {
               "label": "编辑",
               "type": "button",
+              "visibleOn": "${ permissionKeys['sys_permission:update'] }",
               "level": "default",
               "icon": "fa fa-pen-to-square",
               "actionType": "dialog",
@@ -143,7 +142,7 @@
                 "closeOnOutside": true,
                 "body": {
                   "mode": "horizontal",
-                  "api": "post:/v1/permission/update",
+                  "api": "post:/api/permission/update",
                   "labelWidth": 120,
                   "type": "form",
                   "name": "menuEditForm",
@@ -155,7 +154,7 @@
             {
               "label": "添加下级",
               "type": "button",
-              "hiddenOn": "${type=='1'}",
+              "hiddenOn": "${type=='2' || !permissionKeys['sys_permission:create'] }",
               "onEvent": {
                 "click": {
                   "actions": [
@@ -174,11 +173,115 @@
             {
               "label": "删除",
               "type": "button",
+              "visibleOn": "${ permissionKeys['sys_permission:remove'] }",
               "level": "danger",
               "icon": "fa fa-trash-can",
               "actionType": "ajax",
               "confirmText": "确定删除操作吗?",
               "api": "/api/permission/remove/${id}"
+            },
+            {
+              "label": "添加通用权限",
+              "type": "button",
+              "visibleOn": "${type!='2' && permissionKeys['sys_permission:create'] }",
+              "actionType": "dialog",
+              "dialog": {
+                "title": "添加通用权限",
+                "closeOnEsc": true,
+                "closeOnOutside": true,
+                "size": "lg",
+                "body": {
+                  "mode": "horizontal",
+                  "api": {
+                    "method": "post",
+                    "url": "/api/permission/createCommonButtons",
+                    "data": {
+                      "&": "$$",
+                      "buttons": "${ ARRAYMAP(buttons, item => { return { name: item.name, perms: prefix+item.perms  } }) }"
+                    }
+                  },
+                  "labelWidth": 120,
+                  "type": "form",
+                  "data": {
+                    "buttons": [
+                      {
+                        "name": "查询列表",
+                        "perms": "page"
+                      },
+                      {
+                        "name": "查询详情",
+                        "perms": "get"
+                      },
+                      {
+                        "name": "新增",
+                        "perms": "create"
+                      },
+                      {
+                        "name": "编辑",
+                        "perms": "update"
+                      },
+                      {
+                        "name": "删除",
+                        "perms": "remove"
+                      },
+                      {
+                        "name": "导出excel",
+                        "perms": "export_excel"
+                      }
+                    ]
+                  },
+                  "body": [
+                    {
+                      "type": "hidden",
+                      "name": "parentId",
+                      "value": "${id}",
+                      "required": true
+                    },
+                    {
+                      "type": "text",
+                      "value": "建议通用权限设计：table:action"
+                    },
+                    {
+                      "name": "prefix",
+                      "label": "权限前缀",
+                      "type": "input-text",
+                      "value": "",
+                      "required": true
+                    },
+                    {
+                      "type": "combo",
+                      "name": "buttons",
+                      "label": "按钮",
+                      "multiple": true,
+                      "required": true,
+                      "canAccessSuperData": true,
+                      "strictMode": false,
+                      "syncFields": ["prefix"],
+                      "items": [
+                        {
+                          "name": "name",
+                          "label": "名称",
+                          "type": "input-text",
+                          "required": true
+                        },
+                        {
+                          "name": "perms",
+                          "label": "权限",
+                          "type": "input-text",
+                          "required": true
+                        },
+                        {
+                          "name": "perms1",
+                          "label": "",
+                          "type": "input-text",
+                          "static": true,
+                          "value": "${ prefix+perms }"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
             }
           ]
         }
@@ -291,6 +394,11 @@
           "lg": 12,
           "visibleOn": "${menuType =='2' }",
           "clearValueOnHidden": true
+        },
+        {
+          "type": "plain",
+          "text": "建议通用权限设计：table:action, 分页 page 、详情 get 、新增 create、 删除 remove 、编辑 update 、导出excel: export_excel",
+          "visibleOn": "${menuType =='2' }"
         },
         {
           "label": "菜单图标",

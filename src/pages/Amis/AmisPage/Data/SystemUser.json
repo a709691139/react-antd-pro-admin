@@ -1,0 +1,285 @@
+{
+  "title": "系统用户管理",
+  "type": "page",
+  "body": [
+    {
+      "filterTogglable": false,
+      "syncLocation": false,
+      "className": "",
+      "type": "crud",
+      "autoFillHeight": true,
+      "name": "mainTable",
+      "bulkActions": [],
+      "id": "mainTable",
+      "api": {
+        "method": "get",
+        "url": "/api/sys_user/page",
+        "responseData": {
+          "&": "$$"
+        }
+      },
+      "autoGenerateFilter": {
+        "columnsNum": 4,
+        "showBtnToolbar": false
+      },
+      "headerToolbar": [
+        "filter-toggler",
+        {
+          "type": "export-excel",
+          "label": "导出excel",
+          "visibleOn": "${ permissionKeys['sys_user:export_excel'] }",
+          "api": {
+            "url": "/api/sys_user/page",
+            "method": "get",
+            "data": {
+              "&": "$$",
+              "page": 1,
+              "perPage": 99999
+            }
+          }
+        },
+        {
+          "level": "primary",
+          "icon": "fa fa-plus",
+          "label": "新增",
+          "visibleOn": "${ permissionKeys['sys_user:create'] }",
+          "type": "button",
+          "id": "addButton",
+          "onEvent": {
+            "click": {
+              "actions": [
+                {
+                  "actionType": "dialog",
+                  "dialog": {
+                    "title": ["新增"],
+                    "closeOnEsc": true,
+                    "closeOnOutside": true,
+                    "body": {
+                      "mode": "horizontal",
+                      "api": "post:/api/sys_user/create",
+                      "labelWidth": 120,
+                      "type": "form",
+                      "name": "menuEditForm",
+                      "title": "",
+                      "body": { "$ref": "editDialogBody" }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "columns": [
+        {
+          "name": "id",
+          "label": "ID",
+          "toggled": false,
+          "searchable": {
+            "type": "input-text",
+            "placeholder": "请输入"
+          }
+        },
+        {
+          "name": "username",
+          "label": "账号名",
+          "searchable": {
+            "type": "input-text",
+            "placeholder": "请输入"
+          }
+        },
+        {
+          "name": "alias",
+          "label": "别名",
+          "searchable": {
+            "type": "input-text",
+            "placeholder": "请输入"
+          }
+        },
+        {
+          "name": "avatar",
+          "label": "头像",
+          "type": "image",
+          "enlargeAble": true,
+          "thumbMode": "cover"
+        },
+        {
+          "name": "email",
+          "label": "email",
+          "searchable": {
+            "type": "input-text",
+            "placeholder": "请输入"
+          }
+        },
+        {
+          "name": "phone",
+          "label": "手机",
+          "searchable": {
+            "type": "input-text",
+            "placeholder": "请输入"
+          }
+        },
+        {
+          "name": "gender",
+          "label": "性别",
+          "type": "mapping",
+          "map": {
+            "0": "未知",
+            "1": "男",
+            "2": "女"
+          },
+          "searchable": {
+            "type": "select",
+            "searchable": true,
+            "clearable": true,
+            "options": [
+              { "label": "未知", "value": "0" },
+              { "label": "男", "value": "1" },
+              { "label": "女", "value": "2" }
+            ]
+          }
+        },
+        {
+          "name": "realName",
+          "label": "真实姓名",
+          "searchable": {
+            "type": "input-text",
+            "placeholder": "请输入"
+          }
+        },
+        {
+          "name": "signature",
+          "label": "签名"
+        },
+        {
+          "name": "status",
+          "label": "用户状态",
+          "type": "switch",
+          "trueValue": "1",
+          "falseValue": "0",
+          "searchable": {
+            "type": "select",
+            "searchable": true,
+            "clearable": true,
+            "options": [
+              { "label": "禁用", "value": "0" },
+              { "label": "启用", "value": "1" }
+            ]
+          }
+        },
+        {
+          "name": "workNo",
+          "label": "工号",
+          "searchable": {
+            "type": "input-text",
+            "placeholder": "请输入"
+          }
+        },
+        {
+          "name": "departIds",
+          "label": "负责部门todo"
+        },
+
+        {
+          "fixed": "right",
+          "width": 346,
+          "label": "操作",
+          "type": "operation",
+          "buttons": [
+            {
+              "label": "编辑",
+              "type": "button",
+              "visibleOn": "${ permissionKeys['sys_user:update'] }",
+              "level": "default",
+              "icon": "fa fa-pen-to-square",
+              "actionType": "dialog",
+              "dialog": {
+                "title": ["编辑"],
+                "closeOnEsc": true,
+                "closeOnOutside": true,
+                "body": {
+                  "mode": "horizontal",
+                  "api": "post:/api/sys_user/update",
+                  "labelWidth": 120,
+                  "type": "form",
+                  "name": "menuEditForm",
+                  "title": "",
+                  "body": { "$ref": "editDialogBody" }
+                }
+              }
+            },
+            {
+              "label": "删除",
+              "type": "button",
+              "visibleOn": "${ permissionKeys['sys_user:remove'] }",
+              "level": "danger",
+              "icon": "fa fa-trash-can",
+              "actionType": "ajax",
+              "confirmText": "确定删除操作吗?",
+              "api": "/api/sys_user/remove/${id}"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "definitions": {
+    "editDialogBody": {
+      "type": "grid",
+      "columns": [
+        {
+          "type": "hidden",
+          "name": "id"
+        },
+        {
+          "label": "菜单类型",
+          "placeholder": "菜单类型",
+          "name": "menuType",
+          "type": "button-group-select",
+          "options": [
+            { "label": "一级菜单", "value": "0" },
+            { "label": "子菜单", "value": "1" },
+            { "label": "按钮权限", "value": "2" }
+          ],
+          "required": true,
+          "clearable": false,
+          "columnClassName": "mb-3",
+          "md": 12,
+          "sm": 12,
+          "xs": 12,
+          "lg": 12,
+          "value": "0",
+          "onEvent": {
+            "change": {
+              "actions": [
+                {
+                  "actionType": "setValue",
+                  "componentName": "menuEditForm",
+                  "args": {
+                    "value": {
+                      "parentId": "${ menuType==0? '1': parentId }"
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "clearable": true,
+          "columnClassName": "mb-3",
+          "label": "菜单名称",
+          "type": "input-text",
+          "required": true,
+          "md": 12,
+          "name": "name",
+          "sm": 12,
+          "xs": 12,
+          "lg": 12,
+          "placeholder": "菜单名称",
+          "value": ""
+        }
+      ]
+    }
+  }
+}

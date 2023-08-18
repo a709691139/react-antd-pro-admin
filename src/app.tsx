@@ -166,7 +166,6 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
         console.log('getMenuData', menu);
         return menu;
       },
-      locale: false,
     },
     menuItemRender: (item, defaultDom, _menuProps) => {
       const props: LinkProps = {
