@@ -1,0 +1,235 @@
+{
+  "title": "系统角色",
+  "type": "page",
+  "body": [
+    {
+      "filterTogglable": false,
+      "syncLocation": false,
+      "className": "",
+      "type": "crud",
+      "autoFillHeight": true,
+      "name": "mainTable",
+      "bulkActions": [],
+      "id": "mainTable",
+      "api": {
+        "method": "get",
+        "url": "/api/sys_role/page",
+        "responseData": {
+          "&": "$$"
+        }
+      },
+      "autoGenerateFilter": {
+        "columnsNum": 4,
+        "showBtnToolbar": false
+      },
+      "headerToolbar": [
+        "filter-toggler",
+        {
+          "type": "export-excel",
+          "label": "导出excel",
+          "visibleOn": "${ permissionKeys['sys_role:export_excel'] }",
+          "api": {
+            "url": "/api/sys_role/page",
+            "method": "get",
+            "data": {
+              "&": "$$",
+              "page": 1,
+              "perPage": 99999
+            }
+          }
+        },
+        {
+          "level": "primary",
+          "icon": "fa fa-plus",
+          "label": "新增",
+          "visibleOn": "${ permissionKeys['sys_role:create'] }",
+          "type": "button",
+          "id": "addButton",
+          "onEvent": {
+            "click": {
+              "actions": [
+                {
+                  "actionType": "dialog",
+                  "dialog": {
+                    "title": ["新增"],
+                    "closeOnEsc": true,
+                    "closeOnOutside": true,
+                    "body": {
+                      "mode": "horizontal",
+                      "api": "post:/api/sys_role/create",
+                      "labelWidth": 120,
+                      "type": "form",
+                      "name": "menuEditForm",
+                      "title": "",
+                      "body": { "$ref": "editDialogBody" }
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "columns": [
+        {
+          "name": "id",
+          "label": "ID",
+          "toggled": false,
+          "searchable": {
+            "type": "input-text",
+            "placeholder": "请输入"
+          }
+        },
+        {
+          "name": "name",
+          "label": "名称",
+          "searchable": {
+            "type": "input-text",
+            "placeholder": "请输入"
+          }
+        },
+        {
+          "name": "code",
+          "label": "编码",
+          "searchable": {
+            "type": "input-text",
+            "placeholder": "请输入"
+          }
+        },
+        {
+          "fixed": "right",
+          "width": 346,
+          "label": "操作",
+          "type": "operation",
+          "buttons": [
+            {
+              "label": "编辑",
+              "type": "button",
+              "visibleOn": "${ permissionKeys['sys_role:update'] }",
+              "level": "default",
+              "icon": "fa fa-pen-to-square",
+              "actionType": "dialog",
+              "dialog": {
+                "title": ["编辑"],
+                "closeOnEsc": true,
+                "closeOnOutside": true,
+                "body": {
+                  "mode": "horizontal",
+                  "api": "post:/api/sys_role/update",
+                  "type": "form",
+                  "name": "menuEditForm",
+                  "title": "",
+                  "body": { "$ref": "editDialogBody" }
+                }
+              }
+            },
+            {
+              "label": "授权",
+              "type": "button",
+              "level": "default",
+              "icon": "fa fa-pen-to-square",
+              "actionType": "dialog",
+              "dialog": {
+                "title": ["角色权限配置"],
+                "closeOnEsc": true,
+                "closeOnOutside": true,
+                "size": "lg",
+                "body": {
+                  "type": "service",
+                  "api": {
+                    "method": "get",
+                    "url": "/api/sys_role/get?id=${id}",
+                    "responseData": {
+                      "&": "$$",
+                      "permissionIds": "${ ARRAYMAP(permissions, item => item.id ) }"
+                    }
+                  },
+                  "body": {
+                    "mode": "horizontal",
+                    "api": "post:/api/sys_role/updateNeedPermissions",
+                    "type": "form",
+                    "name": "menuEditForm",
+                    "title": "",
+                    "submitText": false,
+                    "body": [
+                      {
+                        "type": "hidden",
+                        "name": "id"
+                      },
+                      {
+                        "type": "input-tree",
+                        "name": "permissionIds",
+                        "label": false,
+                        "multiple": true,
+                        "autoCheckChildren": false,
+                        "searchable": true,
+                        "source": "get:/api/sys_permission/page",
+                        "labelField": "name",
+                        "valueField": "id",
+                        "showIcon": false,
+                        "heightAuto": true,
+                        "joinValues": false,
+                        "extractValue": "id"
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            {
+              "label": "删除",
+              "type": "button",
+              "visibleOn": "${ permissionKeys['sys_role:remove'] }",
+              "level": "danger",
+              "icon": "fa fa-trash-can",
+              "actionType": "ajax",
+              "confirmText": "确定删除操作吗?",
+              "api": "post:/api/sys_role/remove/${id}"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "definitions": {
+    "editDialogBody": {
+      "type": "grid",
+      "columns": [
+        {
+          "type": "hidden",
+          "name": "id"
+        },
+        {
+          "name": "name",
+          "label": "名称",
+          "type": "input-text",
+          "columnClassName": "mb-3",
+          "md": 12,
+          "sm": 12,
+          "xs": 12,
+          "lg": 12
+        },
+        {
+          "name": "code",
+          "label": "编码",
+          "type": "input-text",
+          "columnClassName": "mb-3",
+          "md": 12,
+          "sm": 12,
+          "xs": 12,
+          "lg": 12
+        },
+        {
+          "name": "desc",
+          "label": "描述",
+          "type": "input-text",
+          "columnClassName": "mb-3",
+          "md": 12,
+          "sm": 12,
+          "xs": 12,
+          "lg": 12
+        }
+      ]
+    }
+  }
+}

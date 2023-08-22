@@ -123,11 +123,11 @@ export default {
       token: 'admin',
     },
   },
-  'GET /api/permission/page': {
+  'GET /api/sys_permission/page': {
     success: true,
     data: allMenus,
   },
-  'POST /api/permission/getCurrentUserPermissions': (req: Request, res: Response) => {
+  'POST /api/sys_permission/getCurrentUserPermissions': (req: Request, res: Response) => {
     const data: any[] = [];
     function loop(tree: any[]) {
       tree.forEach((item) => {

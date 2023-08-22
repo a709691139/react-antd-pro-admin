@@ -1,5 +1,5 @@
 {
-  "title": "菜单管理",
+  "title": "系统菜单",
   "type": "page",
   "body": [
     {
@@ -13,7 +13,7 @@
       "id": "mainTable",
       "api": {
         "method": "get",
-        "url": "/api/permission/page",
+        "url": "/api/sys_permission/page",
         "responseData": {
           "&": "$$"
         }
@@ -29,7 +29,7 @@
           "label": "导出excel",
           "visibleOn": "${ permissionKeys['sys_permission:export_excel'] }",
           "api": {
-            "url": "/api/permission/page",
+            "url": "/api/sys_permission/page",
             "method": "get",
             "data": {
               "page": 1,
@@ -55,7 +55,7 @@
                     "closeOnOutside": true,
                     "body": {
                       "mode": "horizontal",
-                      "api": "post:/api/permission/create",
+                      "api": "post:/api/sys_permission/create",
                       "labelWidth": 120,
                       "type": "form",
                       "name": "menuEditForm",
@@ -73,7 +73,8 @@
         {
           "name": "id",
           "label": "ID",
-          "toggled": true,
+          "toggled": false,
+          "width": 100,
           "searchable": {
             "type": "input-text",
             "name": "id",
@@ -142,7 +143,7 @@
                 "closeOnOutside": true,
                 "body": {
                   "mode": "horizontal",
-                  "api": "post:/api/permission/update",
+                  "api": "post:/api/sys_permission/update",
                   "labelWidth": 120,
                   "type": "form",
                   "name": "menuEditForm",
@@ -154,7 +155,7 @@
             {
               "label": "添加下级",
               "type": "button",
-              "hiddenOn": "${type=='2' || !permissionKeys['sys_permission:create'] }",
+              "hiddenOn": "${menuType=='2' || !permissionKeys['sys_permission:create'] }",
               "onEvent": {
                 "click": {
                   "actions": [
@@ -178,12 +179,12 @@
               "icon": "fa fa-trash-can",
               "actionType": "ajax",
               "confirmText": "确定删除操作吗?",
-              "api": "/api/permission/remove/${id}"
+              "api": "post:/api/sys_permission/remove/${id}"
             },
             {
               "label": "添加通用权限",
               "type": "button",
-              "visibleOn": "${type!='2' && permissionKeys['sys_permission:create'] }",
+              "visibleOn": "${menuType!='2' && permissionKeys['sys_permission:create'] }",
               "actionType": "dialog",
               "dialog": {
                 "title": "添加通用权限",
@@ -194,10 +195,10 @@
                   "mode": "horizontal",
                   "api": {
                     "method": "post",
-                    "url": "/api/permission/createCommonButtons",
+                    "url": "/api/sys_permission/createButtons",
                     "data": {
                       "&": "$$",
-                      "buttons": "${ ARRAYMAP(buttons, item => { return { name: item.name, perms: prefix+item.perms  } }) }"
+                      "buttons": "${ ARRAYMAP(buttons, item => ({ name: item.name, perms: prefix+':'+item.perms  }) ) }"
                     }
                   },
                   "labelWidth": 120,
@@ -275,7 +276,7 @@
                           "label": "",
                           "type": "input-text",
                           "static": true,
-                          "value": "${ prefix+perms }"
+                          "value": "${ prefix+':'+perms }"
                         }
                       ]
                     }
@@ -340,7 +341,7 @@
           "disabledOn": "${ menuType=='0' }",
           "source": {
             "method": "get",
-            "url": "/api/permission/page",
+            "url": "/api/sys_permission/page",
             "data": {
               "type": "1,2"
             }

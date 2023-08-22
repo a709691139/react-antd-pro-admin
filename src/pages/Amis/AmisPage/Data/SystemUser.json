@@ -1,5 +1,5 @@
 {
-  "title": "系统用户管理",
+  "title": "系统用户",
   "type": "page",
   "body": [
     {
@@ -149,14 +149,17 @@
         },
         {
           "name": "signature",
-          "label": "签名"
+          "label": "签名",
+          "toggled": false
         },
         {
           "name": "status",
-          "label": "用户状态TODO",
-          "type": "switch",
-          "trueValue": "1",
-          "falseValue": "0",
+          "label": "用户状态",
+          "type": "mapping",
+          "map": {
+            "0": "禁用",
+            "1": "启用"
+          },
           "searchable": {
             "type": "select",
             "searchable": true,
@@ -168,6 +171,12 @@
           }
         },
         {
+          "name": "roles",
+          "label": "角色",
+          "type": "tpl",
+          "tpl": "${ JOIN(ARRAYMAP(roles, item => item.name ),',')}"
+        },
+        {
           "name": "workNo",
           "label": "工号",
           "searchable": {
@@ -177,9 +186,9 @@
         },
         {
           "name": "departIds",
-          "label": "负责部门todo"
+          "label": "负责部门todo",
+          "toggled": false
         },
-
         {
           "fixed": "right",
           "width": 346,
@@ -204,7 +213,80 @@
                   "type": "form",
                   "name": "menuEditForm",
                   "title": "",
+                  "debug": true,
                   "body": { "$ref": "editDialogBody" }
+                }
+              }
+            },
+            {
+              "label": "${status == '1' ? '禁用' : '启用'}",
+              "type": "button",
+              "visibleOn": "${ permissionKeys['sys_user:updateStatus'] }",
+              "level": "default",
+              "actionType": "dialog",
+              "dialog": {
+                "size": "sm",
+                "title": "确认${status == '1' ? '禁用' : '启用'}吗？",
+                "closeOnEsc": true,
+                "closeOnOutside": true,
+                "body": {
+                  "mode": "horizontal",
+                  "api": {
+                    "method": "post",
+                    "url": "/api/sys_user/updateStatus",
+                    "data": {
+                      "userId": "${id}",
+                      "status": "${status=='1'?'0':'1'}"
+                    }
+                  },
+                  "type": "form",
+                  "title": ""
+                }
+              }
+            },
+            {
+              "label": "分配角色",
+              "type": "button",
+              "visibleOn": "${ permissionKeys['sys_user:updateRoles'] }",
+              "level": "default",
+              "actionType": "dialog",
+              "dialog": {
+                "title": "分配角色",
+                "closeOnEsc": true,
+                "closeOnOutside": true,
+                "body": {
+                  "mode": "horizontal",
+                  "api": "post:/api/sys_user/updateRoles",
+                  "labelWidth": 120,
+                  "type": "form",
+                  "title": "",
+                  "data": {
+                    "userId": "${id}",
+                    "roleIds": "${ ARRAYMAP(roles, item => item.id ) }"
+                  },
+                  "body": [
+                    {
+                      "type": "Select",
+                      "name": "roleIds",
+                      "label": "角色",
+                      "source": {
+                        "method": "get",
+                        "url": "/api/sys_role/page",
+                        "data": {
+                          "page": 1,
+                          "perPage": 99999
+                        },
+                        "responseData": {
+                          "items": "${ data }"
+                        }
+                      },
+                      "labelField": "name",
+                      "valueField": "id",
+                      "joinValues": false,
+                      "multiple": true,
+                      "extractValue": true
+                    }
+                  ]
                 }
               }
             },
@@ -216,7 +298,36 @@
               "icon": "fa fa-trash-can",
               "actionType": "ajax",
               "confirmText": "确定删除操作吗?",
-              "api": "/api/sys_user/remove/${id}"
+              "api": "post:/api/sys_user/remove/${id}"
+            },
+            {
+              "label": "重置密码",
+              "type": "button",
+              "visibleOn": "${ permissionKeys['sys_user:resetPassword'] }",
+              "level": "default",
+              "actionType": "dialog",
+              "dialog": {
+                "title": "重置密码",
+                "closeOnEsc": true,
+                "closeOnOutside": true,
+                "body": {
+                  "mode": "horizontal",
+                  "api": "post:/api/sys_user/resetPassword",
+                  "labelWidth": 120,
+                  "type": "form",
+                  "title": "",
+                  "data": {
+                    "userId": "${id}"
+                  },
+                  "body": [
+                    {
+                      "type": "input-text",
+                      "name": "password",
+                      "label": "新密码"
+                    }
+                  ]
+                }
+              }
             }
           ]
         }
@@ -236,6 +347,7 @@
           "label": "账号名",
           "type": "input-text",
           "columnClassName": "mb-3",
+          "required": true,
           "md": 12,
           "sm": 12,
           "xs": 12,
@@ -253,8 +365,75 @@
         },
         {
           "name": "avatar",
-          "label": "头像TODO",
+          "label": "头像",
           "type": "input-image",
+          "receiver": "post:/api/upload/localFile",
+          "maxSize": 2048576,
+          "columnClassName": "mb-3",
+          "md": 12,
+          "sm": 12,
+          "xs": 12,
+          "lg": 12
+        },
+        {
+          "name": "phone",
+          "label": "手机",
+          "type": "input-text",
+          "columnClassName": "mb-3",
+          "md": 12,
+          "sm": 12,
+          "xs": 12,
+          "lg": 12
+        },
+        {
+          "name": "email",
+          "label": "邮箱地址",
+          "type": "input-text",
+          "columnClassName": "mb-3",
+          "md": 12,
+          "sm": 12,
+          "xs": 12,
+          "lg": 12
+        },
+        {
+          "name": "gender",
+          "label": "性别",
+          "type": "select",
+          "options": [
+            { "label": "未知", "value": "0" },
+            { "label": "男", "value": "1" },
+            { "label": "女", "value": "2" }
+          ],
+          "columnClassName": "mb-3",
+          "md": 12,
+          "sm": 12,
+          "xs": 12,
+          "lg": 12
+        },
+        {
+          "name": "realName",
+          "label": "真实姓名",
+          "type": "input-text",
+          "columnClassName": "mb-3",
+          "md": 12,
+          "sm": 12,
+          "xs": 12,
+          "lg": 12
+        },
+        {
+          "name": "signature",
+          "label": "签名",
+          "type": "input-text",
+          "columnClassName": "mb-3",
+          "md": 12,
+          "sm": 12,
+          "xs": 12,
+          "lg": 12
+        },
+        {
+          "name": "departIds",
+          "label": "负责部门id列表 TODO",
+          "type": "input-text",
           "columnClassName": "mb-3",
           "md": 12,
           "sm": 12,

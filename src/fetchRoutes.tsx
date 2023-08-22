@@ -97,6 +97,7 @@ export function transMenu(tree: API.Permission[]): MenuDataItem[] {
         path: v.url,
         redirect: v.redirect,
         icon: v.icon,
+        access: v.perms || v.url,
       };
       if (v.isHidden === '1') {
         route.children = undefined;

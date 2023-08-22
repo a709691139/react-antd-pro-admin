@@ -10,9 +10,9 @@ export async function currentUser(options?: { [key: string]: any }) {
   });
 }
 
-/** 获取当前的用户 GET /api/permission/getCurrentUserPermissions */
+/** 获取当前的用户 GET /api/sys_permission/getCurrentUserPermissions */
 export async function getCurrentUserPermissions(options?: { [key: string]: any }) {
-  return request<API.Permission[]>('/api/permission/getCurrentUserPermissions', {
+  return request<API.Permission[]>('/api/sys_permission/getCurrentUserPermissions', {
     method: 'POST',
     ...(options || {}),
   });
@@ -40,9 +40,9 @@ export async function login(body: API.LoginParams, options?: { [key: string]: an
   });
 }
 
-/** 获取系统默认菜单列表 GET /api/permission/page */
+/** 获取系统默认菜单列表 GET /api/sys_permission/page */
 export async function getSystemPermissions(options?: { [key: string]: any }) {
-  return request<API.Permission[]>('/api/permission/page', {
+  return request<API.Permission[]>('/api/sys_permission/page', {
     method: 'GET',
     ...(options || {}),
   });
