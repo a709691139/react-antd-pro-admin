@@ -25,7 +25,7 @@ const AmisPage: FC<any> = () => {
   });
 
   return (
-    <PageContainer header={{ title: '' }}>
+    <PageContainer header={{ title: '' }} key={compName}>
       <div>
         <ToastComponent
           theme={config.theme}
