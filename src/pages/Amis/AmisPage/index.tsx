@@ -12,6 +12,7 @@ const AmisPage: FC<any> = () => {
   const { initialState } = useModel('@@initialState');
   const permissionKeys = initialState?.permissionKeys || {};
   const amisScopedRef = useRef<IScopedContext>();
+  const { dictMaps, dicts } = useModel('dict');
 
   const location = useLocation();
   const pathname = location.pathname;
@@ -22,6 +23,7 @@ const AmisPage: FC<any> = () => {
 
   useMount(() => {
     console.log('amisScopedRef', amisScopedRef);
+    console.log('dictMap', { dictMaps, dicts });
   });
 
   return (
@@ -39,6 +41,8 @@ const AmisPage: FC<any> = () => {
           {
             data: {
               permissionKeys,
+              dictMaps,
+              dicts,
             },
             // props...
             // locale: 'en-US' // 请参考「多语言」的文档

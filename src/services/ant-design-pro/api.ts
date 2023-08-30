@@ -48,6 +48,17 @@ export async function getSystemPermissions(options?: { [key: string]: any }) {
   });
 }
 
+/** 获取系统字典项列表 GET /api/sys_dict/getAllDict */
+export async function getAllDict(options?: { [key: string]: any }) {
+  return request<{ name: string; code: string; items: { label: string; value: string }[] }[]>(
+    '/api/sys_dict/getAllDict',
+    {
+      method: 'GET',
+      ...(options || {}),
+    },
+  );
+}
+
 /** 此处后端没有提供注释 GET /api/notices */
 export async function getNotices(options?: { [key: string]: any }) {
   return request<API.NoticeIconList>('/api/notices', {

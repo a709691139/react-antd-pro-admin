@@ -1,5 +1,4 @@
 import { Question, SelectLang } from '@/components/RightContent';
-import { LinkOutlined } from '@ant-design/icons';
 import type { Settings as LayoutSettings } from '@ant-design/pro-components';
 import { SettingDrawer } from '@ant-design/pro-components';
 import type { RunTimeLayoutConfig } from '@umijs/max';
@@ -11,6 +10,7 @@ import { getMenuData, layoutActionRef } from './fetchRoutes';
 import { errorConfig } from './requestConfig';
 import {
   currentUser as queryCurrentUser,
+  getAllDict,
   getCurrentUserPermissions,
 } from './services/ant-design-pro/api';
 export { patchClientRoutes, render } from './fetchRoutes';
@@ -50,12 +50,14 @@ export async function getInitialState(): Promise<{
         queryCurrentUser({
           skipErrorHandler: true,
         }),
+        getAllDict(),
       ]);
       const permissions = resList[0].data;
       const permissionKeys: any = {};
       permissions?.forEach((v) => {
         permissionKeys[v.perms || v.url] = true;
       });
+      sessionStorage.setItem('DICT', JSON.stringify(resList[2].data));
 
       return {
         permissions,
@@ -127,14 +129,14 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
         width: '331px',
       },
     ],
-    links: isDev
-      ? [
-          <Link key="openapi" to="/umi/plugin/openapi" target="_blank">
-            <LinkOutlined />
-            <span>OpenAPI 文档</span>
-          </Link>,
-        ]
-      : [],
+    // links: isDev
+    //   ? [
+    //       <Link key="openapi" to="/umi/plugin/openapi" target="_blank">
+    //         <LinkOutlined />
+    //         <span>OpenAPI 文档</span>
+    //       </Link>,
+    //     ]
+    //   : [],
     menuHeaderRender: undefined,
     // 自定义 403 页面
     // unAccessible: <div>unAccessible</div>,

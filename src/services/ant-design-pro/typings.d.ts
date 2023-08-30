@@ -45,6 +45,13 @@ declare namespace API {
     currentAuthority?: string;
   };
 
+  type DictItem = {
+    label: string;
+    value: string;
+    id: string;
+    text: string;
+  };
+
   type PageParams = {
     current?: number;
     pageSize?: number;

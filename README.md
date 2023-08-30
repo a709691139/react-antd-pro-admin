@@ -22,6 +22,12 @@
 - lint:fix `npm run lint:fix`
 - test `npm rtest`
 
+## 系统字典
+
+```ts
+const { dictMaps, dicts } = useModel('dict');
+```
+
 ## amis 组件
 
 - 渲染 component: AmisPage
@@ -59,6 +65,32 @@
     // 转化列表item
     "buttons": "${ ARRAYMAP(buttons, item => ({ name: item.name, perms: item.perms1  }) ) }"
   }
+},
+```
+
+- 字典
+
+```json
+{
+  "name": "status",
+  "label": "用户状态",
+  "type": "mapping",
+  // "map": {
+  //   "0": "禁用",
+  //   "1": "启用"
+  // },
+  "source": "${ dictMaps['bool'] }",
+  "searchable": {
+    "type": "select",
+    "searchable": true,
+    "clearable": true,
+    // "options": [
+    //   { "label": "禁用", "value": "0" },
+    //   { "label": "启用", "value": "1" }
+    // ],
+    "source": "${ dicts['bool'] }"
+  }
+  "source": "/api/sys_dict/getItemsByCode/bool", // 也可以用接口
 },
 ```
 

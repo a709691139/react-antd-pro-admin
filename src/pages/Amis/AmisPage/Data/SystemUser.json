@@ -214,6 +214,7 @@
                   "name": "menuEditForm",
                   "title": "",
                   "debug": true,
+                  "reload": "mainTable",
                   "body": { "$ref": "editDialogBody" }
                 }
               }
@@ -240,7 +241,8 @@
                     }
                   },
                   "type": "form",
-                  "title": ""
+                  "title": "",
+                  "reload": "mainTable"
                 }
               }
             },

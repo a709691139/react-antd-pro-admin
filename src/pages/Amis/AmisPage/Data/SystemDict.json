@@ -1,5 +1,5 @@
 {
-  "title": "系统角色",
+  "title": "系统字典",
   "type": "page",
   "body": [
     {
@@ -13,7 +13,7 @@
       "id": "mainTable",
       "api": {
         "method": "get",
-        "url": "/api/sys_role/page",
+        "url": "/api/sys_dict/page",
         "responseData": {
           "&": "$$"
         }
@@ -27,9 +27,9 @@
         {
           "type": "export-excel",
           "label": "导出excel",
-          "visibleOn": "${ permissionKeys['sys_role:export_excel'] }",
+          "visibleOn": "${ permissionKeys['sys_dict:export_excel'] }",
           "api": {
-            "url": "/api/sys_role/page",
+            "url": "/api/sys_dict/page",
             "method": "get",
             "data": {
               "&": "$$",
@@ -42,7 +42,7 @@
           "level": "primary",
           "icon": "fa fa-plus",
           "label": "新增",
-          "visibleOn": "${ permissionKeys['sys_role:create'] }",
+          "visibleOn": "${ permissionKeys['sys_dict:create'] }",
           "type": "button",
           "id": "addButton",
           "onEvent": {
@@ -56,7 +56,7 @@
                     "closeOnOutside": true,
                     "body": {
                       "mode": "horizontal",
-                      "api": "post:/api/sys_role/create",
+                      "api": "post:/api/sys_dict/create",
                       "labelWidth": 120,
                       "type": "form",
                       "name": "menuEditForm",
@@ -98,6 +98,14 @@
           }
         },
         {
+          "name": "desc",
+          "label": "描述",
+          "searchable": {
+            "type": "input-text",
+            "placeholder": "请输入"
+          }
+        },
+        {
           "fixed": "right",
           "width": 346,
           "label": "操作",
@@ -106,7 +114,7 @@
             {
               "label": "编辑",
               "type": "button",
-              "visibleOn": "${ permissionKeys['sys_role:update'] }",
+              "visibleOn": "${ permissionKeys['sys_dict:update'] }",
               "level": "default",
               "icon": "fa fa-pen-to-square",
               "actionType": "dialog",
@@ -116,77 +124,103 @@
                 "closeOnOutside": true,
                 "body": {
                   "mode": "horizontal",
-                  "api": "post:/api/sys_role/update",
+                  "api": "post:/api/sys_dict/update",
                   "type": "form",
                   "name": "menuEditForm",
                   "title": "",
-                  "reload": "mainTable",
                   "body": { "$ref": "editDialogBody" }
                 }
               }
             },
             {
-              "label": "授权",
+              "label": "配置字典",
               "type": "button",
+              "visibleOn": "${ permissionKeys['sys_dict:update'] }",
               "level": "default",
-              "icon": "fa fa-pen-to-square",
               "actionType": "dialog",
               "dialog": {
-                "title": ["角色权限配置"],
+                "title": ["配置字典"],
                 "closeOnEsc": true,
                 "closeOnOutside": true,
                 "size": "lg",
                 "body": {
-                  "type": "service",
-                  "api": {
-                    "method": "get",
-                    "url": "/api/sys_role/get?id=${id}",
-                    "responseData": {
-                      "&": "$$",
-                      "permissionIds": "${ ARRAYMAP(permissions, item => item.id ) }"
-                    }
+                  "mode": "horizontal",
+                  "api": "post:/api/sys_dict/updateItems",
+                  "data": {
+                    "id": "${id}",
+                    "items": "${items}"
                   },
-                  "body": {
-                    "mode": "horizontal",
-                    "api": "post:/api/sys_role/updateNeedPermissions",
-                    "type": "form",
-                    "name": "menuEditForm",
-                    "title": "",
-                    "submitText": false,
-                    "body": [
-                      {
-                        "type": "hidden",
-                        "name": "id"
-                      },
-                      {
-                        "type": "input-tree",
-                        "name": "permissionIds",
-                        "label": false,
-                        "multiple": true,
-                        "autoCheckChildren": false,
-                        "searchable": true,
-                        "source": "get:/api/sys_permission/page",
-                        "labelField": "name",
-                        "valueField": "id",
-                        "showIcon": false,
-                        "heightAuto": true,
-                        "joinValues": false,
-                        "extractValue": "id"
-                      }
-                    ]
-                  }
+                  "type": "form",
+                  "name": "editDictForm",
+                  "title": "",
+                  "reload": "mainTable",
+                  "body": [
+                    {
+                      "type": "input-table",
+                      "name": "items",
+                      "label": false,
+                      "addable": true,
+                      "editable": true,
+                      "addBtnLabel": false,
+                      "addBtnIcon": false,
+                      "editBtnLabel": "编辑",
+                      "editBtnIcon": false,
+                      "removable": true,
+                      "deleteBtnLabel": "删除",
+                      "deleteBtnIcon": false,
+                      "showIndex": true,
+                      "perPage": 10,
+                      "columns": [
+                        {
+                          "name": "id",
+                          "label": "id",
+                          "toggled": false
+                        },
+                        {
+                          "name": "label",
+                          "label": "名称",
+                          "type": "input-text",
+                          "required": true
+                        },
+                        {
+                          "name": "value",
+                          "label": "值",
+                          "type": "input-text",
+                          "required": true
+                        },
+                        {
+                          "name": "status",
+                          "label": "状态",
+                          "type": "select",
+                          "options": [
+                            { "label": "启动", "value": "1" },
+                            { "label": "禁用", "value": "0" }
+                          ],
+                          "value": "1"
+                        },
+                        {
+                          "name": "desc",
+                          "label": "描述"
+                        },
+                        {
+                          "name": "sortNo",
+                          "label": "排序"
+                        }
+                      ]
+                    }
+                  ]
                 }
               }
             },
             {
               "label": "删除",
               "type": "button",
-              "visibleOn": "${ permissionKeys['sys_role:remove'] }",
+              "visibleOn": "${ permissionKeys['sys_dict:remove'] }",
               "level": "danger",
               "icon": "fa fa-trash-can",
               "actionType": "ajax",
               "confirmText": "确定删除操作吗?",
-              "api": "post:/api/sys_role/remove/${id}"
+              "api": "post:/api/sys_dict/remove/${id}"
             }
           ]
         }

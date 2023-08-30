@@ -60,6 +60,7 @@
                       "type": "form",
                       "name": "menuEditForm",
                       "title": "",
+                      "reload": "mainTable",
                       "body": { "$ref": "editDialogBody" }
                     }
                   }
@@ -148,6 +149,7 @@
                   "type": "form",
                   "name": "menuEditForm",
                   "title": "",
+                  "reload": "mainTable",
                   "body": { "$ref": "editDialogBody" }
                 }
               }
@@ -419,7 +421,7 @@
           "label": "排序",
           "name": "sortNo",
           "type": "input-number",
-          "value": "",
+          "value": "1",
           "columnClassName": "mb-3",
           "md": 12,
           "sm": 12,
@@ -451,8 +453,8 @@
           "clearValueOnHidden": true
         },
         {
-          "label": "跳转地址",
-          "name": "redirect",
+          "label": "url",
+          "name": "url",
           "type": "input-text",
           "value": "",
           "clearable": true,

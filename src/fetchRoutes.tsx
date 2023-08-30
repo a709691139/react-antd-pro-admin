@@ -53,14 +53,6 @@ function transExtraRoutes(tree: API.Permission[]) {
 export function patchClientRoutes({ routes }: any) {
   console.log('patchClientRoutes', routes);
   // 根据 extraRoutes 对 routes 做一些修改
-  // TODO
-  // routes.push({
-  //   path: '/group',
-  //   children: [{
-  //     path: '/group/page',
-  //     element: <Page />,
-  //   }],
-  // });
   const item = routes.find((v: any) => v.id === 'ant-design-pro-layout');
   if (item) {
     item.children.push(...transExtraRoutes(extraRoutes));
@@ -68,17 +60,27 @@ export function patchClientRoutes({ routes }: any) {
 }
 
 export function render(oldRender: any) {
+  const cacheKey = 'SYSTEMPERMISSIONS';
+  const cache = sessionStorage.getItem(cacheKey);
+  function renderSuccess(list: any) {
+    list.forEach((v: any) => {
+      extraRoutes.push(v);
+    });
+    console.warn('render extraRoutes', extraRoutes);
+    oldRender();
+    layoutActionRef.current?.reload();
+  }
+  if (cache) {
+    renderSuccess(JSON.parse(cache));
+    return;
+  }
   getSystemPermissions()
     .then((res) => {
-      res.data.forEach((v) => {
-        extraRoutes.push(v);
-      });
-      console.warn('render extraRoutes', extraRoutes);
-      oldRender();
-      layoutActionRef.current?.reload();
+      renderSuccess(res.data);
+      sessionStorage.setItem(cacheKey, JSON.stringify(res.data));
     })
     .catch((err) => {
-      console.log(err);
+      console.log('getSystemPermissions', err);
       oldRender();
     });
 }
