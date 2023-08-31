@@ -1,5 +1,7 @@
 # react-antd-pro-admin
 
+根据 umijs-max 改造
+
 - 配套后端：node nestjs： https://github.com/a709691139/nest-admin
 
 ## 相关文档
@@ -12,6 +14,7 @@
 ## TODO
 
 - 配置 prod 的请求 url, amis+requestConfig
+- 或者干脆生产用 nginx 代理转发
 
 ## Start project
 
@@ -80,6 +83,7 @@ const { dictMaps, dicts } = useModel('dict');
   //   "1": "启用"
   // },
   "source": "${ dictMaps['bool'] }",
+  "source": "/api/sys_dict/getItemsByCode/bool", // 也可以用接口
   "searchable": {
     "type": "select",
     "searchable": true,
@@ -90,7 +94,7 @@ const { dictMaps, dicts } = useModel('dict');
     // ],
     "source": "${ dicts['bool'] }"
   }
-  "source": "/api/sys_dict/getItemsByCode/bool", // 也可以用接口
+
 },
 ```
 
