@@ -98,6 +98,14 @@ const { dictMaps, dicts } = useModel('dict');
 },
 ```
 
+- 上传文件: 已经在可视编辑器上自动注入了相关属性，详情看`src\components\amis\config.ts`
+
+```json
+"type": "input-image",
+"receiver": "post:/api/upload/localFile",
+"maxSize": 2048576,
+```
+
 ## 权限控制
 
 hooks 或者 window.checkPermission('todo')

@@ -71,6 +71,7 @@ const AmisEditPage: FC<any> = () => {
         data={{
           permissionKeys,
         }}
+        beforeInsert={config.beforeInsert}
       />
     </PageContainer>
   );

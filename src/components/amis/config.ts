@@ -1,8 +1,9 @@
 import { getCommonHeaders } from '@/requestConfig';
+import type { RenderOptions } from 'amis';
 import axios from 'axios';
 import copy from 'copy-to-clipboard';
 
-const env = {
+const env: RenderOptions = {
   // 下面三个接口必须实现
   fetcher: ({
     url, // 接口地址
@@ -90,9 +91,24 @@ const env = {
   // tracker: (eventTracke) => {}
 };
 
+/** 这里做编辑器数据处理，如上传图片的请求地址等 */
+const beforeInsert = (e: any) => {
+  console.log('beforeInsert', e.data);
+  const {
+    data: { type },
+    data,
+  } = e;
+  if (['input-image', 'input-file', 'input-rich-text'].includes(type)) {
+    data['receiver'] = 'post:/api/upload/localFile';
+    data['maxSize'] = 2048576;
+  }
+};
+
 const config = {
   theme: 'antd',
   locale: 'zh-CN',
   env,
+  beforeInsert,
 };
+
 export default config;
