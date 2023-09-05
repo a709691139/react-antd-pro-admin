@@ -1,6 +1,7 @@
 import Footer from '@/components/Footer';
 import { login } from '@/services/ant-design-pro/api';
 import { getFakeCaptcha } from '@/services/ant-design-pro/login';
+import { SystemControllerCreateImageCode } from '@/services/swagger/system';
 import {
   AlipayCircleOutlined,
   LockOutlined,
@@ -13,12 +14,14 @@ import {
   LoginForm,
   ProFormCaptcha,
   ProFormCheckbox,
+  ProFormInstance,
   ProFormText,
 } from '@ant-design/pro-components';
 import { useEmotionCss } from '@ant-design/use-emotion-css';
 import { FormattedMessage, Helmet, history, SelectLang, useIntl, useModel } from '@umijs/max';
+import { useMount } from 'ahooks';
 import { Alert, message, Tabs } from 'antd';
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { flushSync } from 'react-dom';
 import Settings from '../../../../config/defaultSettings';
 
@@ -87,6 +90,8 @@ const Login: React.FC = () => {
   const [userLoginState, setUserLoginState] = useState({ status: 0, msg: '' });
   const [type, setType] = useState<string>('account');
   const { initialState, setInitialState } = useModel('@@initialState');
+  const [imageCodeUrl, setImageCodeUrl] = useState('');
+  const formRef = useRef<ProFormInstance>();
 
   const containerClassName = useEmotionCss(() => {
     return {
@@ -143,6 +148,22 @@ const Login: React.FC = () => {
     }
   };
 
+  const getImageCode = async () => {
+    const { success, data } = await SystemControllerCreateImageCode();
+    if (!success) {
+      return;
+    }
+    if (data.imageCode) {
+      formRef.current?.setFieldValue('imageCode', data.imageCode);
+    }
+    formRef.current?.setFieldValue('imageCodeId', data.imageCodeId);
+    setImageCodeUrl(data.imageUrl);
+  };
+
+  useMount(() => {
+    getImageCode();
+  });
+
   return (
     <div className={containerClassName}>
       <Helmet>
@@ -183,6 +204,7 @@ const Login: React.FC = () => {
           onFinish={async (values) => {
             await handleSubmit(values as API.LoginParams);
           }}
+          formRef={formRef}
         >
           <Tabs
             activeKey={type}
@@ -253,6 +275,28 @@ const Login: React.FC = () => {
                   },
                 ]}
               />
+              <ProFormText
+                name="imageCode"
+                fieldProps={{
+                  size: 'large',
+                }}
+                placeholder={'请输入验证码'}
+                rules={[
+                  {
+                    required: true,
+                    message: '请输入验证码',
+                  },
+                ]}
+              />
+              <ProFormText hidden name="imageCodeId" />
+              <div style={{ marginBottom: 24 }}>
+                <img
+                  className="imageCodeUrl"
+                  src={imageCodeUrl}
+                  style={{ width: 120 }}
+                  onClick={getImageCode}
+                />
+              </div>
             </>
           )}
 

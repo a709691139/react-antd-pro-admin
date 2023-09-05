@@ -7,14 +7,16 @@ import * as caidanquanxianbiaoSysPermission from './caidanquanxianbiaoSysPermiss
 import * as demoOne from './demoOne';
 import * as jiaosebiaoRole from './jiaosebiaoRole';
 import * as shangchuanwenjian from './shangchuanwenjian';
+import * as system from './system';
 import * as xitongyonghuSysUser from './xitongyonghuSysUser';
 import * as xitongzidianbiaoDict from './xitongzidianbiaoDict';
 export default {
   app,
+  system,
   shangchuanwenjian,
-  xitongyonghuSysUser,
-  jiaosebiaoRole,
-  caidanquanxianbiaoSysPermission,
-  demoOne,
   xitongzidianbiaoDict,
+  caidanquanxianbiaoSysPermission,
+  jiaosebiaoRole,
+  xitongyonghuSysUser,
+  demoOne,
 };

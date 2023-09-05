@@ -13,6 +13,12 @@ declare namespace API {
     buttons: string[];
   };
 
+  type CreateImageCodeResponse = {
+    imageCode: string;
+    imageCodeId: string;
+    imageUrl: string;
+  };
+
   type DemoOne = {
     id?: string;
     /** 名称 */
@@ -89,6 +95,10 @@ declare namespace API {
     username: string;
     /** 密码 */
     password: string;
+    /** 验证码 */
+    imageCode: string;
+    /** 验证码id */
+    imageCodeId: string;
   };
 
   type LoginSuccessResponseDto = {
@@ -218,6 +228,7 @@ declare namespace API {
     data: Record<string, any>;
     status: number;
     msg: string;
+    success: boolean;
   };
 
   type Role = {
